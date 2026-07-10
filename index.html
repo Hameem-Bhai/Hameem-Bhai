@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haate Khori - Modern Assignment Generator</title>
+    
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts for handwriting styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@400;700&family=Homemade+Apple&family=Kalam:wght@400;700&family=Nothing+You+Could+Do&family=Patrick+Hand&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <header class="app-header">
+                <div class="logo-group">
+                    <span class="logo-icon">✍️</span>
+                    <h1 class="logo-text">Haate Khori</h1>
+                </div>
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode">☀️</button>
+            </header>
+
+            <!-- DEDICATED PREMIUM TEXT EDITOR -->
+            <div class="premium-editor-box">
+                <div class="editor-header">
+                    <span class="editor-header-title">✍️ Assignment Input</span>
+                    <span class="editor-status-badge">Live Sync</span>
+                </div>
+                <textarea id="text-input" class="editor-textarea" placeholder="Type or paste your assignment text here..."></textarea>
+            </div>
+
+
+            <!-- SECTION 2: FONT SETTINGS -->
+            <div class="control-section">
+                <div class="section-header">Handwriting Font</div>
+                <div class="section-content">
+                    <div class="control-group">
+                        <label class="control-label" for="font-select">Font Family</label>
+                        <select id="font-select" class="select-dropdown">
+                            <option value="'Caveat', cursive">Caveat (Flowy & Casual)</option>
+                            <option value="'Kalam', cursive">Kalam (Neat Print)</option>
+                            <option value="'Shadows Into Light', cursive">Shadows Into Light (Slim & Tidy)</option>
+                            <option value="'Homemade Apple', cursive">Homemade Apple (Elegant Cursive)</option>
+                            <option value="'Patrick Hand', cursive">Patrick Hand (Rounded Print)</option>
+                            <option value="'Architects Daughter', cursive">Architects Daughter (Spaced Caps)</option>
+                            <option value="'Nothing You Could Do', cursive">Nothing You Could Do (Scratchy Ink)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Font Size <span id="font-size-val" class="value-display">19px</span></div>
+                        <input type="range" id="font-size" class="input-range" min="12" max="32" step="1" value="19">
+                    </div>
+
+                    <!-- Upload custom font -->
+                    <div class="control-group">
+                        <label class="control-label">Upload Custom Font (.ttf / .otf)</label>
+                        <div class="file-upload-box">
+                            <div class="upload-icon">📤</div>
+                            <div class="upload-text">Drag & drop or <span>Browse</span></div>
+                            <input type="file" id="font-file-input" accept=".ttf,.otf">
+                        </div>
+                        <div id="font-badge-container" class="font-badge-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: INK COLOR -->
+            <div class="control-section">
+                <div class="section-header">Ink & Styling</div>
+                <div class="section-content">
+                    <div class="control-group">
+                        <label class="control-label">Ink Color</label>
+                        <div class="color-picker-container">
+                            <div class="color-presets">
+                                <div class="color-preset active" data-color="#0011ff" style="background-color: #0011ff;" title="Royal Blue"></div>
+                                <div class="color-preset" data-color="#111111" style="background-color: #111111;" title="Deep Black"></div>
+                                <div class="color-preset" data-color="#ff002b" style="background-color: #ff002b;" title="Red Marker"></div>
+                                <div class="color-preset" data-color="#008f39" style="background-color: #008f39;" title="Green Pen"></div>
+                            </div>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="custom-color" class="input-color" value="#0011ff" title="Custom Ink Color">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: SPACING & MARGINS -->
+            <div class="control-section collapsed">
+                <div class="section-header">Writing Spacing</div>
+                <div class="section-content">
+                    <div class="control-group">
+                        <div class="control-label">Line Height <span id="line-height-val" class="value-display">28px</span></div>
+                        <input type="range" id="line-height" class="input-range" min="20" max="60" step="1" value="28">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Letter Spacing <span id="letter-spacing-val" class="value-display">0px</span></div>
+                        <input type="range" id="letter-spacing" class="input-range" min="-3" max="8" step="0.5" value="0">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Word Spacing <span id="word-spacing-val" class="value-display">0.12em</span></div>
+                        <input type="range" id="word-spacing" class="input-range" min="-0.1" max="0.6" step="0.02" value="0.12">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: REALISM & EFFECTS -->
+            <div class="control-section collapsed">
+                <div class="section-header">Organic Realism</div>
+                <div class="section-content">
+                    <div class="control-group">
+                        <div class="control-label">Word Rotation Jitter <span id="word-jitter-val" class="value-display">0.8°</span></div>
+                        <input type="range" id="word-jitter" class="input-range" min="0" max="3" step="0.1" value="0.8">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Vertical Drift Jitter <span id="line-jitter-val" class="value-display">0.6px</span></div>
+                        <input type="range" id="line-jitter" class="input-range" min="0" max="4" step="0.1" value="0.6">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Mistake Frequency <span id="mistake-jitter-val" class="value-display">0%</span></div>
+                        <input type="range" id="mistake-jitter" class="input-range" min="0" max="5" step="0.5" value="0">
+                    </div>
+
+                    <button id="toggle-margins-btn" class="btn-secondary" style="width: 100%;">Show Margins Boundary</button>
+                </div>
+            </div>
+
+            <!-- SECTION 6: PAGE & TEMPLATE -->
+            <div class="control-section collapsed">
+                <div class="section-header">Page Layout & Margins</div>
+                <div class="section-content">
+                    <div class="control-row">
+                        <div class="control-group">
+                            <label class="control-label" for="paper-size">Page Size</label>
+                            <select id="paper-size" class="select-dropdown">
+                                <option value="a4">A4 Sheet</option>
+                                <option value="letter">Letter Sheet</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="paper-template">Template</label>
+                            <select id="paper-template" class="select-dropdown">
+                                <option value="ruled">Ruled Notebook</option>
+                                <option value="grid">Grid Paper</option>
+                                <option value="margin-only">Margin Only (No Lines)</option>
+                                <option value="plain">Blank Paper</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="paper-texture">Paper Texture</label>
+                        <select id="paper-texture" class="select-dropdown">
+                            <option value="none">None (Clean White)</option>
+                            <option value="crumpled">Crumpled Paper</option>
+                            <option value="spiral">Spiral Binder Rings</option>
+                            <option value="shadow">Ambient Photo Shadow</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Top Margin <span id="margin-top-val" class="value-display">65px</span></div>
+                        <input type="range" id="margin-top" class="input-range" min="20" max="150" step="5" value="65">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Left Margin <span id="margin-left-val" class="value-display">70px</span></div>
+                        <input type="range" id="margin-left" class="input-range" min="20" max="150" step="5" value="70">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Right Margin <span id="margin-right-val" class="value-display">40px</span></div>
+                        <input type="range" id="margin-right" class="input-range" min="10" max="100" step="5" value="40">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Bottom Margin <span id="margin-bottom-val" class="value-display">50px</span></div>
+                        <input type="range" id="margin-bottom" class="input-range" min="20" max="150" step="5" value="50">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Custom Background Paper</label>
+                        <div style="display: flex; gap: 8px;">
+                            <div class="file-upload-box" style="flex-grow: 1; padding: 10px;">
+                                <div class="upload-text">Upload Image</div>
+                                <input type="file" id="custom-bg-input" accept="image/*">
+                            </div>
+                            <button id="remove-bg-btn" class="btn-secondary" style="display: none; padding: 0 12px; color: var(--danger-color); border-color: rgba(239, 68, 68, 0.2);">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group" style="flex-direction: row; justify-content: space-between; align-items: center; margin-top: 4px;">
+                        <label class="control-label" for="scanner-effect" style="cursor: pointer;">Scanner Contrast Effect</label>
+                        <input type="checkbox" id="scanner-effect" style="width: 18px; height: 18px; cursor: pointer;">
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Workspace Main Screen -->
+        <main class="workspace-main">
+            <div class="workspace-header">
+                <div class="workspace-title">Live Rendering Canvas</div>
+                <div class="export-actions">
+                    <button id="add-page-btn" class="btn-secondary">➕ Add Page</button>
+                    <button id="download-png" class="btn-secondary">🖼️ Download Images</button>
+                    <button id="download-pdf" class="btn-primary">📄 Download PDF</button>
+                </div>
+            </div>
+
+            <!-- Page Previews (Populated dynamically) -->
+            <div id="preview-container" class="preview-container"></div>
+        </main>
+
+        <!-- Right Formatting Panel -->
+        <aside class="right-panel">
+            <div class="right-panel-title">✍️ Format Text</div>
+
+            <div class="fmt-selection-hint">
+                Select text on the page to apply formatting
+            </div>
+
+            <!-- Style buttons -->
+            <div class="fmt-btn-group">
+                <div class="fmt-btn-group-label">Style</div>
+                <div class="fmt-btn-row">
+                    <button id="fmt-bold" class="fmt-panel-btn" title="Bold"><b>B</b></button>
+                    <button id="fmt-italic" class="fmt-panel-btn" title="Italic"><i>I</i></button>
+                    <button id="fmt-underline" class="fmt-panel-btn" title="Underline"><u>U</u></button>
+                </div>
+                <div class="fmt-btn-row">
+                    <button id="fmt-highlight" class="fmt-panel-btn" title="Highlight selected text" style="font-size:12px; flex: 2;">✏️ Highlight</button>
+                    <button id="fmt-clear" class="fmt-panel-btn" title="Remove all formatting" style="font-size:12px; flex: 2;">✕ Clear</button>
+                </div>
+            </div>
+
+            <div class="fmt-panel-divider"></div>
+
+            <!-- Insert Image -->
+            <div class="fmt-btn-group">
+                <div class="fmt-btn-group-label">Insert</div>
+                <div class="file-upload-box" style="padding: 10px; cursor: pointer; position: relative;">
+                    <div class="upload-text" style="font-size:11px; font-weight:700;">🖼️ Insert Image</div>
+                    <input type="file" id="fmt-image-input" accept="image/*" style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;">
+                </div>
+            </div>
+
+            <div class="fmt-panel-divider"></div>
+
+            <!-- Font -->
+            <div class="fmt-btn-group">
+                <div class="fmt-btn-group-label">Font</div>
+                <select id="fmt-font" class="fmt-panel-select">
+                    <option value="">— Select Font —</option>
+                    <option value="'Caveat', cursive">Caveat</option>
+                    <option value="'Kalam', cursive">Kalam</option>
+                    <option value="'Shadows Into Light', cursive">Shadows Into Light</option>
+                    <option value="'Homemade Apple', cursive">Homemade Apple</option>
+                    <option value="'Patrick Hand', cursive">Patrick Hand</option>
+                    <option value="'Architects Daughter', cursive">Architects Daughter</option>
+                    <option value="'Nothing You Could Do', cursive">Nothing You Could Do</option>
+                </select>
+            </div>
+
+            <!-- Size -->
+            <div class="fmt-btn-group">
+                <div class="fmt-btn-group-label">Size</div>
+                <select id="fmt-size" class="fmt-panel-select" size="1">
+                    <option value="">— Select Size —</option>
+                    <optgroup label="Very Small">
+                        <option value="8px">8 px</option>
+                        <option value="9px">9 px</option>
+                        <option value="10px">10 px</option>
+                        <option value="11px">11 px</option>
+                    </optgroup>
+                    <optgroup label="Small">
+                        <option value="12px">12 px</option>
+                        <option value="13px">13 px</option>
+                        <option value="14px">14 px</option>
+                        <option value="15px">15 px</option>
+                    </optgroup>
+                    <optgroup label="Normal">
+                        <option value="16px">16 px ✓ default</option>
+                        <option value="17px">17 px</option>
+                        <option value="18px">18 px</option>
+                        <option value="19px">19 px</option>
+                        <option value="20px">20 px</option>
+                    </optgroup>
+                    <optgroup label="Large">
+                        <option value="22px">22 px</option>
+                        <option value="24px">24 px</option>
+                        <option value="26px">26 px</option>
+                        <option value="28px">28 px</option>
+                        <option value="30px">30 px</option>
+                        <option value="32px">32 px</option>
+                        <option value="36px">36 px</option>
+                    </optgroup>
+                    <optgroup label="Heading / Title">
+                        <option value="40px">40 px</option>
+                        <option value="48px">48 px</option>
+                        <option value="56px">56 px</option>
+                        <option value="64px">64 px</option>
+                        <option value="72px">72 px</option>
+                    </optgroup>
+                </select>
+
+            </div>
+
+            <div class="fmt-panel-divider"></div>
+
+            <!-- Ink Color -->
+            <div class="fmt-btn-group">
+                <div class="fmt-btn-group-label">Ink Color</div>
+                <div class="fmt-color-row">
+                    <span class="fmt-color-label">Pick color</span>
+                    <div class="fmt-color-swatch" title="Ink Color">
+                        <input type="color" id="fmt-color" value="#0011ff">
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Exporting Progress Modal Overlay -->
+    <div id="progress-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="spinner"></div>
+            <div id="modal-title" class="modal-title">Generating PDF</div>
+            <div id="modal-desc" class="modal-desc">Rendering page canvases and compilation, please wait...</div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div id="progress-text" class="progress-text">0%</div>
+                <button id="close-modal" class="btn-secondary" style="display: none; padding: 4px 12px;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SVG Text Distortion Filter for Ink Bleed effect -->
+    <svg style="display: none;">
+        <filter id="ink-bleed">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+            <feGaussianBlur in="displaced" stdDeviation="0.32" result="blurred" />
+            <feMerge>
+                <feMergeNode in="blurred" />
+                <feMergeNode in="SourceGraphic" opacity="0.82" />
+            </feMerge>
+        </filter>
+
+        <!-- Ink-matching Sketch Filter -->
+        <filter id="image-sketch-filter">
+            <!-- 1. Grayscale & Contrast boost -->
+            <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0
+                                                 0.33 0.33 0.33 0 0
+                                                 0.33 0.33 0.33 0 0
+                                                 0    0    0    1 0" result="gray"/>
+            <!-- 2. Dynamic recoloring matrix (black to inkColor, white to white) -->
+            <feColorMatrix id="sketch-recolor-matrix" type="matrix" values="1 0 0 0 0
+                                                                           0 1 0 0 0
+                                                                           0 0 1 0 0
+                                                                           0 0 0 1 0" />
+        </filter>
+    </svg>
+
+
+
+    <!-- External CDN libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
