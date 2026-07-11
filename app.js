@@ -1515,12 +1515,14 @@
         const activeLineJitter = lineJitter * fatigueMult;
         const offY = activeLineJitter > 0 ? (Math.random() - 0.5) * activeLineJitter : 0;
 
-        // Store raw values in dataset for post-render slants access
+        // Store raw values in dataset so applyPostRenderSlants can read them
         wordElement.dataset.rot = rot.toFixed(3);
         wordElement.dataset.offY = offY.toFixed(3);
 
-        // Apply transform directly inline
-        wordElement.style.transform = `rotate(${rot.toFixed(3)}deg) translateY(${offY.toFixed(3)}px)`;
+        // Use transform for rotation and style.top for vertical offset
+        // style.top on position:relative inline-block is the most universally reliable method
+        wordElement.style.transform = rot !== 0 ? `rotate(${rot.toFixed(3)}deg)` : '';
+        wordElement.style.top = offY !== 0 ? `${offY.toFixed(3)}px` : '0px';
 
         const baseSpacing = wordSpacing !== 0.12 ? wordSpacing : 0.05;
         const activeWordSpacing = baseSpacing * fatigueMult;
@@ -1683,12 +1685,11 @@
             tokens.forEach((tok, idx) => {
                 const progress = idx / (total - 1);
                 
-                // Curve: Starts flat (straight) at the beginning, then curves up/down quadratically at the end.
-                // We use progress^2.5 for "straight at first, then curves at the end"
-                // A positive activeSlant curves the line upward (negative Y offset).
+                // Curve: flat at start, curves up/down at the end (progress^2.5)
+                // Positive activeSlant = curves upward (negative top offset)
                 const slantLift = -1.0 * Math.pow(progress, 2.5) * activeSlant * 5.0;
 
-                // Read base offsets from dataset properties
+                // Read base offsets from dataset (set by applyJitter for word elements)
                 let baseOffset = parseFloat(tok.dataset.offY);
                 if (isNaN(baseOffset)) baseOffset = 0;
                 
@@ -1698,12 +1699,9 @@
                 const newOffset = baseOffset + slantLift;
                 const newRot = baseRot + (progress * activeSlant * 0.4);
 
-                // Save updated values in dataset
-                tok.dataset.offY = newOffset.toFixed(3);
-                tok.dataset.rot = newRot.toFixed(3);
-
-                // Update standard inline transform directly
-                tok.style.transform = `rotate(${newRot.toFixed(3)}deg) translateY(${newOffset.toFixed(3)}px)`;
+                // Use style.top for vertical positioning (works universally on position:relative elements)
+                tok.style.top = `${newOffset.toFixed(3)}px`;
+                tok.style.transform = newRot !== 0 ? `rotate(${newRot.toFixed(3)}deg)` : '';
             });
         });
     }

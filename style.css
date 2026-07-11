@@ -844,8 +844,8 @@ body.light-theme .input-text, body.light-theme .select-dropdown {
 .handwritten-word {
     display: inline-block;
     white-space: pre-wrap;
-    /* Rotations and offsets calculated dynamically in Javascript */
-    transform: rotate(var(--word-rotate, 0deg)) translateY(var(--word-offset-y, 0px));
+    position: relative;
+    /* Rotation set directly via JS style.transform; top set via style.top */
     margin-right: var(--word-spacing, 0.05em);
     transition: color 0.2s ease;
 }
@@ -853,8 +853,8 @@ body.light-theme .input-text, body.light-theme .select-dropdown {
 .handwritten-space {
     display: inline-block;
     white-space: pre;
-    /* Rotations and offsets calculated dynamically in Javascript for slants */
-    transform: rotate(var(--word-rotate, 0deg)) translateY(var(--word-offset-y, 0px));
+    position: relative;
+    /* top set directly via JS style.top for slant curves */
 }
 
 .handwritten-line {
@@ -1254,9 +1254,11 @@ body.light-theme .editor-textarea::-webkit-scrollbar-thumb {
     background-color: rgba(99, 102, 241, 0.005);
 }
 
-/* Strips rotations during active editing for clean layout/typing cursor alignment */
-.paper-content:focus .handwritten-word {
+/* Strips rotations/offsets during active editing for clean layout/typing cursor alignment */
+.paper-content:focus .handwritten-word,
+.paper-content:focus .handwritten-space {
     transform: none !important;
+    top: 0 !important;
     margin-right: var(--word-spacing, 0.05em) !important;
 }
 
