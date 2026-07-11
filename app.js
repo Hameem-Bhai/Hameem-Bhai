@@ -520,6 +520,17 @@
         function restoreSelection() {
             if (!savedRange) return;
             const sel = window.getSelection();
+            
+            // Explicitly restore focus to parent contenteditable container
+            let node = savedRange.startContainer;
+            while (node && node !== document.body) {
+                if (node.classList && node.classList.contains('paper-content')) {
+                    node.focus();
+                    break;
+                }
+                node = node.parentNode;
+            }
+            
             sel.removeAllRanges();
             sel.addRange(savedRange);
         }
@@ -1486,14 +1497,19 @@
 
     // Jitter function to calculate slight rotation/translation offsets (updates with writing fatigue progress)
     function applyJitter(wordElement, progress = 0) {
-        const fatigueMult = 1.0 + (progress * (state.fatigueFactor / 100));
+        const fatigueFactor = parseFloat(state.fatigueFactor) || 0;
+        const wordJitter = parseFloat(state.wordJitter) || 0;
+        const lineJitter = parseFloat(state.lineJitter) || 0;
+        const wordSpacing = parseFloat(state.wordSpacing) || 0.05;
 
-        if (state.fatigueFactor > 0) {
-            const targetSize = state.fontSize * (1.0 + (progress * (state.fatigueFactor / 100) * 0.12));
+        const fatigueMult = 1.0 + (progress * (fatigueFactor / 100));
+
+        if (fatigueFactor > 0) {
+            const targetSize = state.fontSize * (1.0 + (progress * (fatigueFactor / 100) * 0.12));
             wordElement.style.fontSize = `${targetSize}px`;
         }
 
-        const activeWordJitter = state.wordJitter * fatigueMult;
+        const activeWordJitter = wordJitter * fatigueMult;
         if (activeWordJitter > 0) {
             const rot = (Math.random() - 0.5) * activeWordJitter;
             wordElement.style.setProperty('--word-rotate', `${rot}deg`);
@@ -1501,7 +1517,7 @@
             wordElement.style.setProperty('--word-rotate', '0deg');
         }
 
-        const activeLineJitter = state.lineJitter * fatigueMult;
+        const activeLineJitter = lineJitter * fatigueMult;
         if (activeLineJitter > 0) {
             const offY = (Math.random() - 0.5) * activeLineJitter;
             wordElement.style.setProperty('--word-offset-y', `${offY}px`);
@@ -1509,7 +1525,7 @@
             wordElement.style.setProperty('--word-offset-y', '0px');
         }
 
-        const baseSpacing = state.wordSpacing !== 0.12 ? state.wordSpacing : 0.05;
+        const baseSpacing = wordSpacing !== 0.12 ? wordSpacing : 0.05;
         const activeWordSpacing = baseSpacing * fatigueMult;
         wordElement.style.setProperty('--word-spacing', `${activeWordSpacing}em`);
     }
@@ -1649,7 +1665,8 @@
 
     // Post-rendering curved slant pass (starts straight, slopes up/down at the end of the line)
     function applyPostRenderSlants() {
-        if (state.lineSlant === 0) return;
+        const lineSlant = parseFloat(state.lineSlant) || 0;
+        if (lineSlant === 0) return;
         
         const lines = document.querySelectorAll('.handwritten-line');
         lines.forEach(line => {
@@ -1664,7 +1681,7 @@
                 return x - Math.floor(x);
             }
             const lineVariance = (random() - 0.5) * 0.15;
-            const activeSlant = state.lineSlant + lineVariance;
+            const activeSlant = lineSlant + lineVariance;
 
             tokens.forEach((tok, idx) => {
                 const progress = idx / (total - 1);
@@ -1676,13 +1693,17 @@
 
                 // Apply curves to vertical translation
                 const currentOffsetVal = tok.style.getPropertyValue('--word-offset-y') || '0px';
-                const currentOffset = parseFloat(currentOffsetVal) || 0;
+                let currentOffset = parseFloat(currentOffsetVal);
+                if (isNaN(currentOffset)) currentOffset = 0;
+                
                 tok.style.setProperty('--word-offset-y', `${currentOffset + slantLift}px`);
 
                 // Rotate the individual words near the end to align them to the curve angle
                 const slantRotation = progress * activeSlant * 0.4;
                 const currentRotVal = tok.style.getPropertyValue('--word-rotate') || '0deg';
-                const currentRot = parseFloat(currentRotVal) || 0;
+                let currentRot = parseFloat(currentRotVal);
+                if (isNaN(currentRot)) currentRot = 0;
+                
                 tok.style.setProperty('--word-rotate', `${currentRot + slantRotation}deg`);
             });
         });
