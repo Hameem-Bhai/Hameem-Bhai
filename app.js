@@ -1159,6 +1159,7 @@
         const dims = paperDimensions[state.paperSize];
         const width = dims.width;
         const height = dims.height;
+        const color = state.inkColor || '#0011ff';
 
         let seed = pageNum * 77;
         function random() {
@@ -1166,52 +1167,74 @@
             return x - Math.floor(x);
         }
 
-        const totalNoiseCount = state.organicNoise;
+        // More splatters per noise level (3x density)
+        const totalNoiseCount = state.organicNoise * 3;
+
         for (let i = 0; i < totalNoiseCount; i++) {
-            const isCoffee = random() < 0.35; // 35% coffee stain, 65% ink splatter
             const el = document.createElement('div');
-            
+            el.className = 'ink-splatter-svg';
+
             const rDeg = Math.floor(random() * 360);
-            const size = isCoffee ? Math.floor(random() * 50) + 70 : Math.floor(random() * 15) + 15;
-            
-            // Stay within page boundaries
+            // Mix of tiny dots, medium blots, and large splatter shapes
+            const sizeType = random();
+            let size;
+            if (sizeType < 0.4) {
+                size = Math.floor(random() * 6) + 3;   // tiny dot: 3–8px
+            } else if (sizeType < 0.75) {
+                size = Math.floor(random() * 14) + 8;  // medium blot: 8–22px
+            } else {
+                size = Math.floor(random() * 22) + 20; // large splatter: 20–42px
+            }
+
             const posX = Math.floor(random() * (width - size - 40)) + 20;
             const posY = Math.floor(random() * (height - size - 40)) + 20;
 
-            if (isCoffee) {
-                el.className = 'coffee-stain-svg';
-                el.style.width = `${size}px`;
-                el.style.height = `${size}px`;
-                el.style.left = `${posX}px`;
-                el.style.top = `${posY}px`;
-                el.style.transform = `rotate(${rDeg}deg)`;
-                
-                el.innerHTML = `
-                    <svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="42" fill="none" stroke="#7c2d12" stroke-width="2.5" stroke-linecap="round" opacity="0.6" style="filter: blur(0.5px);" />
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#7c2d12" stroke-width="1" opacity="0.4" style="filter: blur(0.8px);" />
-                        <path d="M25,50 Q40,30 65,35 T80,65" fill="none" stroke="#7c2d12" stroke-width="4" opacity="0.2" style="filter: blur(2px);" />
-                    </svg>
-                `;
-            } else {
-                el.className = 'ink-splatter-svg';
-                el.style.width = `${size}px`;
-                el.style.height = `${size}px`;
-                el.style.left = `${posX}px`;
-                el.style.top = `${posY}px`;
-                el.style.transform = `rotate(${rDeg}deg)`;
-                
-                const color = state.inkColor || '#0011ff';
-                el.innerHTML = `
+            el.style.width = `${size}px`;
+            el.style.height = `${size}px`;
+            el.style.left = `${posX}px`;
+            el.style.top = `${posY}px`;
+            el.style.transform = `rotate(${rDeg}deg)`;
+
+            // Pick a random splatter shape template
+            const shapeType = Math.floor(random() * 4);
+            let svgContent;
+
+            if (shapeType === 0) {
+                // Teardrop splat with satellite drops
+                svgContent = `
                     <svg viewBox="0 0 40 40" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20,10 Q26,14 24,20 T18,26 T14,20 Q12,12 20,10 Z" fill="${color}" opacity="0.8" />
-                        <circle cx="28" cy="15" r="1.5" fill="${color}" opacity="0.75" />
-                        <circle cx="12" cy="24" r="1" fill="${color}" opacity="0.75" />
-                        <circle cx="16" cy="12" r="0.8" fill="${color}" opacity="0.7" />
-                        <circle cx="25" cy="27" r="1.2" fill="${color}" opacity="0.8" />
-                    </svg>
-                `;
+                        <path d="M20,8 Q28,14 26,22 T18,30 T12,22 Q10,12 20,8 Z" fill="${color}" opacity="${(0.5 + random() * 0.4).toFixed(2)}" />
+                        <circle cx="30" cy="13" r="${(1 + random() * 2).toFixed(1)}" fill="${color}" opacity="0.7" />
+                        <circle cx="10" cy="26" r="${(0.8 + random() * 1.5).toFixed(1)}" fill="${color}" opacity="0.65" />
+                        <circle cx="14" cy="10" r="${(0.6 + random() * 1).toFixed(1)}" fill="${color}" opacity="0.6" />
+                        <circle cx="27" cy="29" r="${(0.5 + random() * 1.2).toFixed(1)}" fill="${color}" opacity="0.7" />
+                    </svg>`;
+            } else if (shapeType === 1) {
+                // Simple round blot with a smear
+                svgContent = `
+                    <svg viewBox="0 0 40 40" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="20" cy="22" rx="${(8 + random() * 6).toFixed(1)}" ry="${(6 + random() * 5).toFixed(1)}" fill="${color}" opacity="${(0.55 + random() * 0.35).toFixed(2)}" />
+                        <ellipse cx="${(22 + random() * 8).toFixed(1)}" cy="${(16 + random() * 6).toFixed(1)}" rx="${(2 + random() * 3).toFixed(1)}" ry="${(1.5 + random() * 2).toFixed(1)}" fill="${color}" opacity="0.5" />
+                        <circle cx="${(10 + random() * 6).toFixed(1)}" cy="${(10 + random() * 6).toFixed(1)}" r="${(0.8 + random() * 1.5).toFixed(1)}" fill="${color}" opacity="0.6" />
+                    </svg>`;
+            } else if (shapeType === 2) {
+                // Star-burst splatter
+                svgContent = `
+                    <svg viewBox="0 0 40 40" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20,20 L${(14+random()*4).toFixed(0)},${(6+random()*4).toFixed(0)} L20,20 L${(28+random()*4).toFixed(0)},${(10+random()*4).toFixed(0)} L20,20 L${(32+random()*3).toFixed(0)},${(22+random()*4).toFixed(0)} L20,20 L${(24+random()*4).toFixed(0)},${(32+random()*4).toFixed(0)} L20,20 L${(10+random()*4).toFixed(0)},${(30+random()*4).toFixed(0)} L20,20 L${(6+random()*4).toFixed(0)},${(16+random()*4).toFixed(0)} Z"
+                              fill="${color}" opacity="${(0.5 + random() * 0.4).toFixed(2)}" />
+                        <circle cx="20" cy="20" r="${(3 + random() * 3).toFixed(1)}" fill="${color}" opacity="0.9" />
+                    </svg>`;
+            } else {
+                // Plain ink dot / micro-drop
+                svgContent = `
+                    <svg viewBox="0 0 20 20" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="10" cy="10" r="${(5 + random() * 4).toFixed(1)}" fill="${color}" opacity="${(0.6 + random() * 0.35).toFixed(2)}" />
+                        <circle cx="${(6 + random() * 8).toFixed(1)}" cy="${(4 + random() * 4).toFixed(1)}" r="${(1 + random() * 1.5).toFixed(1)}" fill="${color}" opacity="0.55" />
+                    </svg>`;
             }
+
+            el.innerHTML = svgContent;
             pageEl.appendChild(el);
         }
     }
