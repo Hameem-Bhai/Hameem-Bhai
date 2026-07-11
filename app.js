@@ -69,7 +69,31 @@
         paperTextureSelect: document.getElementById('paper-texture'),
         mistakeSlider: document.getElementById('mistake-jitter'),
         mistakeVal: document.getElementById('mistake-jitter-val'),
-        fmtImageInput: document.getElementById('fmt-image-input')
+        fmtImageInput: document.getElementById('fmt-image-input'),
+        
+        presetHomework: document.getElementById('preset-homework'),
+        presetLetter: document.getElementById('preset-letter'),
+        presetNotes: document.getElementById('preset-notes'),
+        
+        lineSlantSlider: document.getElementById('line-slant'),
+        lineSlantVal: document.getElementById('line-slant-val'),
+        
+        fatigueSlider: document.getElementById('fatigue-factor'),
+        fatigueVal: document.getElementById('fatigue-val'),
+        
+        organicNoiseSlider: document.getElementById('organic-noise'),
+        organicNoiseVal: document.getElementById('organic-noise-val'),
+        
+        zoomSlider: document.getElementById('zoom-slider'),
+        zoomVal: document.getElementById('zoom-value'),
+        
+        fmtDrawBtn: document.getElementById('fmt-draw-btn'),
+        doodleModal: document.getElementById('doodle-modal'),
+        doodleCanvas: document.getElementById('doodle-canvas'),
+        doodleClear: document.getElementById('doodle-clear'),
+        doodleCancel: document.getElementById('doodle-cancel'),
+        doodleSave: document.getElementById('doodle-save'),
+        doodleBrushSize: document.getElementById('doodle-brush-size')
     };
 
     // App State Configuration
@@ -99,6 +123,10 @@
         
         paperTexture: 'none', // 'none', 'crumpled', 'spiral', 'shadow'
         mistakeFrequency: 0, // percentage 0 to 5
+        lineSlant: 0, // range -3 to 3 degrees
+        fatigueFactor: 0, // percentage 0 to 100
+        organicNoise: 0, // integer 0 to 5
+        zoomFactor: 100, // percentage 50 to 150
         
         uploadedFonts: []
     };
@@ -108,6 +136,9 @@
         a4: { width: 794, height: 1123, jspdf: 'a4' },
         letter: { width: 816, height: 1056, jspdf: 'letter' }
     };
+
+    // Shared reference to hold contenteditable cursor selection range
+    let savedRange = null;
 
     // Initialize Application
     function init() {
@@ -245,6 +276,76 @@
         // Mistake Frequency Slider
         setupSlider(elements.mistakeSlider, elements.mistakeVal, 'mistakeFrequency', '%', triggerRender);
 
+        // Line Slant Slider
+        setupSlider(elements.lineSlantSlider, elements.lineSlantVal, 'lineSlant', '°', triggerRender);
+
+        // Fatigue Factor Slider
+        setupSlider(elements.fatigueSlider, elements.fatigueVal, 'fatigueFactor', '%', triggerRender);
+
+        // Organic Noise Slider
+        setupSlider(elements.organicNoiseSlider, elements.organicNoiseVal, 'organicNoise', '', triggerRender);
+
+        // Zoom Slider Listener
+        elements.zoomSlider.addEventListener('input', function (e) {
+            state.zoomFactor = parseInt(e.target.value);
+            elements.zoomVal.textContent = state.zoomFactor + '%';
+            autoScalePages();
+        });
+
+        // Preset: Homework click listener
+        elements.presetHomework.addEventListener('click', function () {
+            state.fontFamily = "'Kalam', cursive";
+            state.fontSize = 16;
+            state.lineHeight = 26;
+            state.inkColor = '#111111';
+            state.wordJitter = 1.4;
+            state.lineJitter = 1.0;
+            state.lineSlant = 0.6;
+            state.mistakeFrequency = 2.5;
+            state.fatigueFactor = 25;
+            state.organicNoise = 2;
+            state.paperTemplate = 'ruled';
+            state.paperTexture = 'crumpled';
+            syncControlsWithState();
+            triggerRender();
+        });
+
+        // Preset: Love Letter click listener
+        elements.presetLetter.addEventListener('click', function () {
+            state.fontFamily = "'Homemade Apple', cursive";
+            state.fontSize = 19;
+            state.lineHeight = 32;
+            state.inkColor = '#7f1d1d'; // Crimson red
+            state.wordJitter = 0.3;
+            state.lineJitter = 0.2;
+            state.lineSlant = -0.4;
+            state.mistakeFrequency = 0;
+            state.fatigueFactor = 0;
+            state.organicNoise = 0;
+            state.paperTemplate = 'plain';
+            state.paperTexture = 'shadow';
+            syncControlsWithState();
+            triggerRender();
+        });
+
+        // Preset: Tidy Notes click listener
+        elements.presetNotes.addEventListener('click', function () {
+            state.fontFamily = "'Patrick Hand', cursive";
+            state.fontSize = 18;
+            state.lineHeight = 28;
+            state.inkColor = '#0011ff';
+            state.wordJitter = 0.5;
+            state.lineJitter = 0.3;
+            state.lineSlant = 0;
+            state.mistakeFrequency = 0.5;
+            state.fatigueFactor = 10;
+            state.organicNoise = 0;
+            state.paperTemplate = 'ruled';
+            state.paperTexture = 'none';
+            syncControlsWithState();
+            triggerRender();
+        });
+
         // Format Image Upload Inserter
         elements.fmtImageInput.addEventListener('change', function (e) {
             const file = e.target.files[0];
@@ -276,6 +377,118 @@
             }
         });
 
+        // --- DOODLE CANVAS DRAWING IMPLEMENTATION ---
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        const canvas = elements.doodleCanvas;
+        const ctx = canvas.getContext('2d');
+
+        // Set up brush settings
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        function getCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            if (e.touches && e.touches.length > 0) {
+                return {
+                    x: (e.touches[0].clientX - rect.left) * scaleX,
+                    y: (e.touches[0].clientY - rect.top) * scaleY
+                };
+            } else {
+                return {
+                    x: (e.clientX - rect.left) * scaleX,
+                    y: (e.clientY - rect.top) * scaleY
+                };
+            }
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const coords = getCoordinates(e);
+            lastX = coords.x;
+            lastY = coords.y;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const coords = getCoordinates(e);
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(coords.x, coords.y);
+            
+            ctx.lineWidth = parseInt(elements.doodleBrushSize.value);
+            ctx.strokeStyle = state.inkColor || '#0011ff';
+            ctx.stroke();
+
+            lastX = coords.x;
+            lastY = coords.y;
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Mouse listeners
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch listeners
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        // Toggle Drawing Modal
+        elements.fmtDrawBtn.addEventListener('click', function () {
+            // Fill background white initially
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            elements.doodleModal.classList.add('active');
+        });
+
+        // Cancel Drawing
+        elements.doodleCancel.addEventListener('click', function () {
+            elements.doodleModal.classList.remove('active');
+        });
+
+        // Clear Canvas
+        elements.doodleClear.addEventListener('click', function () {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // Save Doodle to Caret Selection Range
+        elements.doodleSave.addEventListener('click', function () {
+            restoreSelection();
+            
+            const dataUrl = canvas.toDataURL('image/png');
+            
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            img.className = 'ink-colored';
+            
+            const sel = window.getSelection();
+            if (sel && sel.rangeCount > 0) {
+                const range = sel.getRangeAt(0);
+                range.insertNode(img);
+                
+                const br = document.createElement('br');
+                range.insertNode(br);
+                
+                syncTextFromEditable();
+                triggerRender();
+            }
+            
+            elements.doodleModal.classList.remove('active');
+        });
+
         // Custom Font Upload
         elements.fontFileInput.addEventListener('change', handleFontUpload);
 
@@ -296,7 +509,6 @@
         });
         // Right Panel Formatting Actions
         // Save the active contenteditable selection before panel button clicks blur the page
-        let savedRange = null;
 
         function saveSelection() {
             const sel = window.getSelection();
@@ -314,13 +526,13 @@
 
         const toolbarItems = [
             elements.fmtBold, elements.fmtItalic, elements.fmtUnderline,
-            elements.fmtHighlight, elements.fmtClear
+            elements.fmtHighlight, elements.fmtClear, elements.fmtDrawBtn,
+            elements.fmtImageInput
         ];
         toolbarItems.forEach(item => {
             if (item) {
                 // Save selection on mousedown BEFORE focus is lost
                 item.addEventListener('mousedown', function(e) {
-                    e.preventDefault();
                     saveSelection();
                 });
             }
@@ -428,9 +640,8 @@
         // Track selection changes to always have latest range saved
         document.addEventListener('selectionchange', () => {
             const sel = window.getSelection();
-            if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
+            if (sel && sel.rangeCount > 0) {
                 const anchor = sel.anchorNode;
-                // Only save if selection is inside a paper-content
                 let node = anchor;
                 while (node) {
                     if (node.classList && node.classList.contains('paper-content')) {
@@ -490,7 +701,13 @@
             marginLeft: state.marginLeft,
             marginTop: state.marginTop,
             marginRight: state.marginRight,
-            marginBottom: state.marginBottom
+            marginBottom: state.marginBottom,
+            paperTexture: state.paperTexture,
+            mistakeFrequency: state.mistakeFrequency,
+            lineSlant: state.lineSlant,
+            fatigueFactor: state.fatigueFactor,
+            organicNoise: state.organicNoise,
+            zoomFactor: state.zoomFactor
         };
         localStorage.setItem('text_to_handwriting_settings', JSON.stringify(settingsToSave));
     }
@@ -559,6 +776,22 @@
         if (elements.mistakeSlider) {
             elements.mistakeSlider.value = state.mistakeFrequency;
             elements.mistakeVal.textContent = state.mistakeFrequency + '%';
+        }
+        if (elements.lineSlantSlider) {
+            elements.lineSlantSlider.value = state.lineSlant;
+            elements.lineSlantVal.textContent = state.lineSlant + '°';
+        }
+        if (elements.fatigueSlider) {
+            elements.fatigueSlider.value = state.fatigueFactor;
+            elements.fatigueVal.textContent = state.fatigueFactor + '%';
+        }
+        if (elements.organicNoiseSlider) {
+            elements.organicNoiseSlider.value = state.organicNoise;
+            elements.organicNoiseVal.textContent = state.organicNoise;
+        }
+        if (elements.zoomSlider) {
+            elements.zoomSlider.value = state.zoomFactor;
+            elements.zoomVal.textContent = state.zoomFactor + '%';
         }
         
         // Setup Ink Color presets active border
@@ -799,6 +1032,9 @@
             page.classList.add(`texture-${state.paperTexture}`);
         }
 
+        // Apply organic noise overlays (ink splatters / coffee rings)
+        applyOrganicNoise(page, pageNum);
+
         // Generate spiral binder loops if selected
         if (state.paperTexture === 'spiral') {
             const binder = document.createElement('div');
@@ -903,6 +1139,70 @@
             page: page,
             content: content
         };
+    }
+
+    // Seeded random generator for placing noise elements in identical positions on re-renders
+    function applyOrganicNoise(pageEl, pageNum) {
+        if (!state.organicNoise || state.organicNoise === 0) return;
+
+        const dims = paperDimensions[state.paperSize];
+        const width = dims.width;
+        const height = dims.height;
+
+        let seed = pageNum * 77;
+        function random() {
+            let x = Math.sin(seed++) * 10000;
+            return x - Math.floor(x);
+        }
+
+        const totalNoiseCount = state.organicNoise;
+        for (let i = 0; i < totalNoiseCount; i++) {
+            const isCoffee = random() < 0.35; // 35% coffee stain, 65% ink splatter
+            const el = document.createElement('div');
+            
+            const rDeg = Math.floor(random() * 360);
+            const size = isCoffee ? Math.floor(random() * 50) + 70 : Math.floor(random() * 15) + 15;
+            
+            // Stay within page boundaries
+            const posX = Math.floor(random() * (width - size - 40)) + 20;
+            const posY = Math.floor(random() * (height - size - 40)) + 20;
+
+            if (isCoffee) {
+                el.className = 'coffee-stain-svg';
+                el.style.width = `${size}px`;
+                el.style.height = `${size}px`;
+                el.style.left = `${posX}px`;
+                el.style.top = `${posY}px`;
+                el.style.transform = `rotate(${rDeg}deg)`;
+                
+                el.innerHTML = `
+                    <svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="#7c2d12" stroke-width="2.5" stroke-linecap="round" opacity="0.6" style="filter: blur(0.5px);" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#7c2d12" stroke-width="1" opacity="0.4" style="filter: blur(0.8px);" />
+                        <path d="M25,50 Q40,30 65,35 T80,65" fill="none" stroke="#7c2d12" stroke-width="4" opacity="0.2" style="filter: blur(2px);" />
+                    </svg>
+                `;
+            } else {
+                el.className = 'ink-splatter-svg';
+                el.style.width = `${size}px`;
+                el.style.height = `${size}px`;
+                el.style.left = `${posX}px`;
+                el.style.top = `${posY}px`;
+                el.style.transform = `rotate(${rDeg}deg)`;
+                
+                const color = state.inkColor || '#0011ff';
+                el.innerHTML = `
+                    <svg viewBox="0 0 40 40" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20,10 Q26,14 24,20 T18,26 T14,20 Q12,12 20,10 Z" fill="${color}" opacity="0.8" />
+                        <circle cx="28" cy="15" r="1.5" fill="${color}" opacity="0.75" />
+                        <circle cx="12" cy="24" r="1" fill="${color}" opacity="0.75" />
+                        <circle cx="16" cy="12" r="0.8" fill="${color}" opacity="0.7" />
+                        <circle cx="25" cy="27" r="1.2" fill="${color}" opacity="0.8" />
+                    </svg>
+                `;
+            }
+            pageEl.appendChild(el);
+        }
     }
 
     let pageParagraphMap = {};
@@ -1184,27 +1484,34 @@
         return line;
     }
 
-    // Jitter function to calculate slight rotation/translation offsets
-    function applyJitter(wordElement) {
-        if (state.wordJitter > 0) {
-            const rot = (Math.random() - 0.5) * state.wordJitter;
+    // Jitter function to calculate slight rotation/translation offsets (updates with writing fatigue progress)
+    function applyJitter(wordElement, progress = 0) {
+        const fatigueMult = 1.0 + (progress * (state.fatigueFactor / 100));
+
+        if (state.fatigueFactor > 0) {
+            const targetSize = state.fontSize * (1.0 + (progress * (state.fatigueFactor / 100) * 0.12));
+            wordElement.style.fontSize = `${targetSize}px`;
+        }
+
+        const activeWordJitter = state.wordJitter * fatigueMult;
+        if (activeWordJitter > 0) {
+            const rot = (Math.random() - 0.5) * activeWordJitter;
             wordElement.style.setProperty('--word-rotate', `${rot}deg`);
         } else {
             wordElement.style.setProperty('--word-rotate', '0deg');
         }
 
-        if (state.lineJitter > 0) {
-            const offY = (Math.random() - 0.5) * state.lineJitter;
+        const activeLineJitter = state.lineJitter * fatigueMult;
+        if (activeLineJitter > 0) {
+            const offY = (Math.random() - 0.5) * activeLineJitter;
             wordElement.style.setProperty('--word-offset-y', `${offY}px`);
         } else {
             wordElement.style.setProperty('--word-offset-y', '0px');
         }
 
-        if (state.wordSpacing !== 0.12) {
-            wordElement.style.setProperty('--word-spacing', `${state.wordSpacing}em`);
-        } else {
-            wordElement.style.setProperty('--word-spacing', '0.05em');
-        }
+        const baseSpacing = state.wordSpacing !== 0.12 ? state.wordSpacing : 0.05;
+        const activeWordSpacing = baseSpacing * fatigueMult;
+        wordElement.style.setProperty('--word-spacing', `${activeWordSpacing}em`);
     }
 
     // Complete UI & Pagination rendering loop
@@ -1299,7 +1606,7 @@
                 } else {
                     tokenEl.className = 'handwritten-word';
                     tokenEl.textContent = token.text;
-                    applyJitter(tokenEl);
+                    applyJitter(tokenEl, paragraphs.length > 1 ? pIdx / (paragraphs.length - 1) : 0);
                     
                     let elementToAppend = tokenEl;
                     for (let wIdx = token.wrappers.length - 1; wIdx >= 0; wIdx--) {
@@ -1336,15 +1643,56 @@
             }
         }
         window.lastRenderedTextLength = state.text.length;
+        applyPostRenderSlants();
         autoScalePages();
     }
 
-    // Auto-scale pages to fit workspace container perfectly without cutoffs
+    // Post-rendering curved slant pass (starts straight, slopes up/down at the end of the line)
+    function applyPostRenderSlants() {
+        if (state.lineSlant === 0) return;
+        
+        const lines = document.querySelectorAll('.handwritten-line');
+        lines.forEach(line => {
+            const tokens = Array.from(line.querySelectorAll('.handwritten-word, .handwritten-space'));
+            const total = tokens.length;
+            if (total <= 2) return;
+
+            // Generate deterministic organic variance per line
+            let seed = total;
+            function random() {
+                let x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            }
+            const lineVariance = (random() - 0.5) * 0.15;
+            const activeSlant = state.lineSlant + lineVariance;
+
+            tokens.forEach((tok, idx) => {
+                const progress = idx / (total - 1);
+                
+                // Curve: Starts flat (straight) at the beginning, then curves up/down quadratically at the end.
+                // We use progress^2.5 for "straight at first, then curves at the end"
+                // A positive activeSlant curves the line upward (negative Y offset).
+                const slantLift = -1.0 * Math.pow(progress, 2.5) * activeSlant * 5.0;
+
+                // Apply curves to vertical translation
+                const currentOffsetVal = tok.style.getPropertyValue('--word-offset-y') || '0px';
+                const currentOffset = parseFloat(currentOffsetVal) || 0;
+                tok.style.setProperty('--word-offset-y', `${currentOffset + slantLift}px`);
+
+                // Rotate the individual words near the end to align them to the curve angle
+                const slantRotation = progress * activeSlant * 0.4;
+                const currentRotVal = tok.style.getPropertyValue('--word-rotate') || '0deg';
+                const currentRot = parseFloat(currentRotVal) || 0;
+                tok.style.setProperty('--word-rotate', `${currentRot + slantRotation}deg`);
+            });
+        });
+    }
+
+    // Auto-scale pages to fit workspace container perfectly without cutoffs, incorporating zoom slider
     function autoScalePages() {
         const container = elements.previewContainer;
         if (!container) return;
         
-        // Take clientWidth (inside borders/paddings) and subtract 40px for visual breathing room
         const containerWidth = container.clientWidth - 40;
         const pages = document.querySelectorAll('.page-wrapper');
         const dims = paperDimensions[state.paperSize];
@@ -1352,27 +1700,24 @@
         
         const targetWidth = dims.width;
         
+        // Base scale scales down if container is smaller than paper size
+        let baseScale = 1.0;
         if (containerWidth < targetWidth && containerWidth > 150) {
-            const scale = containerWidth / targetWidth;
-            pages.forEach(wrapper => {
-                // Apply CSS scale transform
-                wrapper.style.transform = `scale(${scale})`;
-                wrapper.style.transformOrigin = 'top center';
-                
-                // Adjust layout boundaries to prevent overlapping sheets
-                wrapper.style.width = `${dims.width * scale}px`;
-                wrapper.style.height = `${(dims.height + 40) * scale}px`;
-                wrapper.style.marginBottom = `${12 * scale}px`;
-            });
-        } else {
-            pages.forEach(wrapper => {
-                wrapper.style.transform = '';
-                wrapper.style.transformOrigin = '';
-                wrapper.style.width = '';
-                wrapper.style.height = '';
-                wrapper.style.marginBottom = '';
-            });
+            baseScale = containerWidth / targetWidth;
         }
+
+        // Apply zoom factor multiplier
+        const scale = baseScale * (state.zoomFactor / 100);
+        
+        pages.forEach(wrapper => {
+            wrapper.style.transform = `scale(${scale})`;
+            wrapper.style.transformOrigin = 'top center';
+            
+            // Adjust layout boundaries to prevent overlapping sheets
+            wrapper.style.width = `${dims.width * scale}px`;
+            wrapper.style.height = `${(dims.height + 40) * scale}px`;
+            wrapper.style.marginBottom = `${12 * scale}px`;
+        });
     }
 
     // --- EXPORT FUNCTIONALITY ---

@@ -1521,5 +1521,97 @@ body.light-theme .fmt-divider {
     -webkit-user-drag: none;
 }
 
+/* ==========================================================================
+   New Realism Bundle (Presets, Slants, Fatigue, Noise, Doodle & Zoom)
+   ========================================================================== */
+
+/* Zoom Toolbar */
+.zoom-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    z-index: 4;
+}
+
+body.light-theme .zoom-toolbar {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.zoom-slider-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 120px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border-color);
+    outline: none;
+    margin: 0;
+}
+
+.zoom-slider-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    cursor: pointer;
+    box-shadow: 0 0 6px var(--accent-color);
+    transition: transform 0.15s ease;
+}
+
+.zoom-slider-input::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.zoom-value-text {
+    width: 32px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Doodle Canvas Modal */
+.doodle-modal-content {
+    width: 600px !important;
+    max-width: 95%;
+    padding: 20px;
+    background: var(--bg-app);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--panel-shadow);
+}
+
+body.light-theme .doodle-modal-content {
+    background: #ffffff;
+}
+
+/* Organic Noise overlays */
+.ink-splatter-svg {
+    position: absolute;
+    pointer-events: none;
+    z-index: 6;
+    mix-blend-mode: multiply;
+    transform-origin: center;
+}
+
+.coffee-stain-svg {
+    position: absolute;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.22;
+    mix-blend-mode: multiply;
+    transform-origin: center;
+}
+
+
 
 

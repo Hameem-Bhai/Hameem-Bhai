@@ -26,6 +26,16 @@
                 <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode">☀️</button>
             </header>
 
+            <!-- ONE-CLICK STYLE PRESETS -->
+            <div class="control-section">
+                <div class="section-header">Style Presets</div>
+                <div class="section-content" style="flex-direction: row; gap: 6px; padding: 10px 14px;">
+                    <button id="preset-homework" class="btn-secondary" style="flex: 1; padding: 8px 4px; font-size: 10px; font-weight: 700; gap: 2px;" title="🎒 Messy Homework">🎒 Homework</button>
+                    <button id="preset-letter" class="btn-secondary" style="flex: 1; padding: 8px 4px; font-size: 10px; font-weight: 700; gap: 2px;" title="💌 Love Letter">💌 Letter</button>
+                    <button id="preset-notes" class="btn-secondary" style="flex: 1; padding: 8px 4px; font-size: 10px; font-weight: 700; gap: 2px;" title="📝 Tidy Notes">📝 Notes</button>
+                </div>
+            </div>
+
             <!-- DEDICATED PREMIUM TEXT EDITOR -->
             <div class="premium-editor-box">
                 <div class="editor-header">
@@ -132,6 +142,21 @@
                         <input type="range" id="mistake-jitter" class="input-range" min="0" max="5" step="0.5" value="0">
                     </div>
 
+                    <div class="control-group">
+                        <div class="control-label">Line Slant <span id="line-slant-val" class="value-display">0°</span></div>
+                        <input type="range" id="line-slant" class="input-range" min="-3" max="3" step="0.2" value="0">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Fatigue Factor <span id="fatigue-val" class="value-display">0%</span></div>
+                        <input type="range" id="fatigue-factor" class="input-range" min="0" max="100" step="5" value="0">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Organic Noise <span id="organic-noise-val" class="value-display">0</span></div>
+                        <input type="range" id="organic-noise" class="input-range" min="0" max="5" step="1" value="0">
+                    </div>
+
                     <button id="toggle-margins-btn" class="btn-secondary" style="width: 100%;">Show Margins Boundary</button>
                 </div>
             </div>
@@ -219,6 +244,13 @@
                 </div>
             </div>
 
+            <!-- ZOOM TOOLBAR -->
+            <div class="zoom-toolbar">
+                <span class="zoom-label">🔍 Preview Zoom:</span>
+                <input type="range" id="zoom-slider" class="zoom-slider-input" min="50" max="150" step="5" value="100">
+                <span id="zoom-value" class="zoom-value-text">100%</span>
+            </div>
+
             <!-- Page Previews (Populated dynamically) -->
             <div id="preview-container" class="preview-container"></div>
         </main>
@@ -247,12 +279,15 @@
 
             <div class="fmt-panel-divider"></div>
 
-            <!-- Insert Image -->
+            <!-- Insert Image / Doodle -->
             <div class="fmt-btn-group">
                 <div class="fmt-btn-group-label">Insert</div>
-                <div class="file-upload-box" style="padding: 10px; cursor: pointer; position: relative;">
-                    <div class="upload-text" style="font-size:11px; font-weight:700;">🖼️ Insert Image</div>
-                    <input type="file" id="fmt-image-input" accept="image/*" style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;">
+                <div style="display: flex; gap: 6px;">
+                    <div class="file-upload-box" style="padding: 10px; cursor: pointer; position: relative; flex: 1.2;">
+                        <div class="upload-text" style="font-size:11px; font-weight:700;">🖼️ Image</div>
+                        <input type="file" id="fmt-image-input" accept="image/*" style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;">
+                    </div>
+                    <button id="fmt-draw-btn" class="fmt-panel-btn" style="flex: 1; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:4px; height: 36px; border-radius: var(--border-radius-md);">🎨 Draw</button>
                 </div>
             </div>
 
@@ -376,6 +411,27 @@
     </svg>
 
 
+
+    <!-- Drawing Canvas Modal -->
+    <div id="doodle-modal" class="modal-overlay">
+        <div class="modal-content doodle-modal-content">
+            <div class="modal-header">
+                <h3 style="margin:0; font-size:16px;">🎨 Draw inline Sketch</h3>
+                <span class="doodle-brush-control" style="display:flex; align-items:center; gap:6px; font-size:12px;">
+                    <label>Stroke:</label>
+                    <input type="range" id="doodle-brush-size" min="1" max="10" value="2" style="width:70px;">
+                </span>
+            </div>
+            <div class="doodle-canvas-wrapper" style="border: 1px solid var(--border-color); border-radius:var(--border-radius-md); background:#fff; overflow:hidden; margin:12px 0;">
+                <canvas id="doodle-canvas" width="560" height="350" style="display:block; width:100%; cursor:crosshair; background:#fff; touch-action:none;"></canvas>
+            </div>
+            <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:8px;">
+                <button id="doodle-clear" class="btn-secondary" style="padding:6px 12px; font-size:12px;">✕ Clear</button>
+                <button id="doodle-cancel" class="btn-secondary" style="padding:6px 12px; font-size:12px;">Cancel</button>
+                <button id="doodle-save" class="btn-primary" style="padding:6px 12px; font-size:12px;">Save Sketch</button>
+            </div>
+        </div>
+    </div>
 
     <!-- External CDN libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
