@@ -1510,20 +1510,17 @@
         }
 
         const activeWordJitter = wordJitter * fatigueMult;
-        if (activeWordJitter > 0) {
-            const rot = (Math.random() - 0.5) * activeWordJitter;
-            wordElement.style.setProperty('--word-rotate', `${rot}deg`);
-        } else {
-            wordElement.style.setProperty('--word-rotate', '0deg');
-        }
+        const rot = activeWordJitter > 0 ? (Math.random() - 0.5) * activeWordJitter : 0;
 
         const activeLineJitter = lineJitter * fatigueMult;
-        if (activeLineJitter > 0) {
-            const offY = (Math.random() - 0.5) * activeLineJitter;
-            wordElement.style.setProperty('--word-offset-y', `${offY}px`);
-        } else {
-            wordElement.style.setProperty('--word-offset-y', '0px');
-        }
+        const offY = activeLineJitter > 0 ? (Math.random() - 0.5) * activeLineJitter : 0;
+
+        // Store raw values in dataset for post-render slants access
+        wordElement.dataset.rot = rot.toFixed(3);
+        wordElement.dataset.offY = offY.toFixed(3);
+
+        // Apply transform directly inline
+        wordElement.style.transform = `rotate(${rot.toFixed(3)}deg) translateY(${offY.toFixed(3)}px)`;
 
         const baseSpacing = wordSpacing !== 0.12 ? wordSpacing : 0.05;
         const activeWordSpacing = baseSpacing * fatigueMult;
@@ -1691,20 +1688,22 @@
                 // A positive activeSlant curves the line upward (negative Y offset).
                 const slantLift = -1.0 * Math.pow(progress, 2.5) * activeSlant * 5.0;
 
-                // Apply curves to vertical translation
-                const currentOffsetVal = tok.style.getPropertyValue('--word-offset-y') || '0px';
-                let currentOffset = parseFloat(currentOffsetVal);
-                if (isNaN(currentOffset)) currentOffset = 0;
+                // Read base offsets from dataset properties
+                let baseOffset = parseFloat(tok.dataset.offY);
+                if (isNaN(baseOffset)) baseOffset = 0;
                 
-                tok.style.setProperty('--word-offset-y', `${currentOffset + slantLift}px`);
+                let baseRot = parseFloat(tok.dataset.rot);
+                if (isNaN(baseRot)) baseRot = 0;
 
-                // Rotate the individual words near the end to align them to the curve angle
-                const slantRotation = progress * activeSlant * 0.4;
-                const currentRotVal = tok.style.getPropertyValue('--word-rotate') || '0deg';
-                let currentRot = parseFloat(currentRotVal);
-                if (isNaN(currentRot)) currentRot = 0;
-                
-                tok.style.setProperty('--word-rotate', `${currentRot + slantRotation}deg`);
+                const newOffset = baseOffset + slantLift;
+                const newRot = baseRot + (progress * activeSlant * 0.4);
+
+                // Save updated values in dataset
+                tok.dataset.offY = newOffset.toFixed(3);
+                tok.dataset.rot = newRot.toFixed(3);
+
+                // Update standard inline transform directly
+                tok.style.transform = `rotate(${newRot.toFixed(3)}deg) translateY(${newOffset.toFixed(3)}px)`;
             });
         });
     }
