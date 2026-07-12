@@ -260,33 +260,78 @@ body.light-theme .fmt-panel-select {
     margin: 2px 0;
 }
 
-.fmt-color-row {
+/* Ink color swatch grid */
+.fmt-ink-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 4px 0;
+}
+
+.ink-swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    position: relative;
+    flex-shrink: 0;
+    outline: none;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    font-size: 14px;
 }
 
-.fmt-color-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-sub);
-    flex: 1;
+.ink-swatch:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.45);
 }
 
-.fmt-color-swatch {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 2px solid var(--border-color);
-    overflow: hidden;
-    position: relative;
+.ink-swatch-custom {
+    background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
     cursor: pointer;
-    flex-shrink: 0;
-    transition: box-shadow 0.15s ease;
+    font-size: 14px;
 }
 
-.fmt-color-swatch:hover {
-    box-shadow: 0 0 0 3px rgba(99,102,241,0.4);
+/* Import file button */
+.import-file-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(99,102,241,0.1);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 6px;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+}
+
+.import-file-btn:hover {
+    background: rgba(99,102,241,0.22);
+    border-color: rgba(99,102,241,0.6);
+}
+
+/* Correction / cross-out button */
+.fmt-correct-btn {
+    color: #cc3333 !important;
+    border-color: rgba(204,51,51,0.3) !important;
+}
+.fmt-correct-btn:hover {
+    background: rgba(204,51,51,0.12) !important;
+}
+
+/* Inline correction mark span — realistic pen strikethrough */
+.hw-correction {
+    text-decoration: line-through;
+    text-decoration-style: solid;
+    text-decoration-thickness: 2px;
+    opacity: 0.75;
 }
 
 .fmt-color-swatch input[type="color"] {

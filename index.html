@@ -42,7 +42,13 @@
             <div class="premium-editor-box">
                 <div class="editor-header">
                     <span class="editor-header-title">✍️ Assignment Input</span>
-                    <span class="editor-status-badge">Live Sync</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <label class="import-file-btn" title="Import .txt or .docx file">
+                            📂 Import
+                            <input type="file" id="import-file-input" accept=".txt,.docx" style="display:none;">
+                        </label>
+                        <span class="editor-status-badge">Live Sync</span>
+                    </div>
                 </div>
                 <textarea id="text-input" class="editor-textarea" placeholder="Type or paste your assignment text here..."></textarea>
             </div>
@@ -168,6 +174,11 @@
                         <input type="range" id="organic-noise" class="input-range" min="0" max="5" step="1" value="0">
                     </div>
 
+                    <div class="control-group">
+                        <div class="control-label">Ink Pressure <span id="ink-pressure-val" class="value-display">0</span></div>
+                        <input type="range" id="ink-pressure" class="input-range" min="0" max="5" step="1" value="0">
+                    </div>
+
                     <button id="toggle-margins-btn" class="btn-secondary" style="width: 100%;">Show Margins Boundary</button>
                 </div>
             </div>
@@ -286,6 +297,9 @@
                     <button id="fmt-highlight" class="fmt-panel-btn" title="Highlight selected text" style="font-size:12px; flex: 2;">✏️ Highlight</button>
                     <button id="fmt-clear" class="fmt-panel-btn" title="Remove all formatting" style="font-size:12px; flex: 2;">✕ Clear</button>
                 </div>
+                <div class="fmt-btn-row">
+                    <button id="fmt-correct" class="fmt-panel-btn fmt-correct-btn" title="Cross out selected text (correction mark)" style="font-size:11px; flex: 1;">✗ Cross Out</button>
+                </div>
             </div>
 
             <div class="fmt-panel-divider"></div>
@@ -365,14 +379,22 @@
 
             <div class="fmt-panel-divider"></div>
 
-            <!-- Ink Color -->
+            <!-- Ink Color for selection -->
             <div class="fmt-btn-group">
-                <div class="fmt-btn-group-label">Ink Color</div>
-                <div class="fmt-color-row">
-                    <span class="fmt-color-label">Pick color</span>
-                    <div class="fmt-color-swatch" title="Ink Color">
-                        <input type="color" id="fmt-color" value="#0011ff">
-                    </div>
+                <div class="fmt-btn-group-label">Ink Color for Selection</div>
+                <div class="fmt-ink-swatches">
+                    <button class="ink-swatch" data-color="#0011ff" style="background:#0011ff" title="Blue"></button>
+                    <button class="ink-swatch" data-color="#111111" style="background:#111111" title="Black"></button>
+                    <button class="ink-swatch" data-color="#cc0000" style="background:#cc0000" title="Red"></button>
+                    <button class="ink-swatch" data-color="#007700" style="background:#007700" title="Green"></button>
+                    <button class="ink-swatch" data-color="#7b00cc" style="background:#7b00cc" title="Purple"></button>
+                    <button class="ink-swatch" data-color="#c87000" style="background:#c87000" title="Orange"></button>
+                    <button class="ink-swatch" data-color="#005f8a" style="background:#005f8a" title="Teal"></button>
+                    <button class="ink-swatch" data-color="#8B4513" style="background:#8B4513" title="Brown"></button>
+                    <label class="ink-swatch ink-swatch-custom" title="Custom color">
+                        🎨
+                        <input type="color" id="fmt-color" value="#0011ff" style="position:absolute;opacity:0;width:0;height:0;">
+                    </label>
                 </div>
             </div>
         </aside>
@@ -394,8 +416,9 @@
         </div>
     </div>
 
-    <!-- SVG Text Distortion Filter for Ink Bleed effect -->
+    <!-- SVG Filters -->
     <svg style="display: none;">
+        <!-- Ink Bleed / texture effect -->
         <filter id="ink-bleed">
             <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G" result="displaced" />
@@ -406,14 +429,24 @@
             </feMerge>
         </filter>
 
+        <!-- Ink Pressure Simulation: varying stroke weight & micro-displacement -->
+        <filter id="ink-pressure" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence id="pressure-turbulence" type="turbulence" baseFrequency="0.018 0.025" numOctaves="4" seed="5" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" id="pressure-displacement" scale="0" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
+            <feGaussianBlur in="displaced" id="pressure-blur" stdDeviation="0.15" result="blurred"/>
+            <feMorphology id="pressure-morphology" in="blurred" operator="erode" radius="0" result="thinned"/>
+            <feMerge>
+                <feMergeNode in="thinned"/>
+                <feMergeNode in="SourceGraphic" result="final"/>
+            </feMerge>
+        </filter>
+
         <!-- Ink-matching Sketch Filter -->
         <filter id="image-sketch-filter">
-            <!-- 1. Grayscale & Contrast boost -->
             <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0
                                                  0.33 0.33 0.33 0 0
                                                  0.33 0.33 0.33 0 0
                                                  0    0    0    1 0" result="gray"/>
-            <!-- 2. Dynamic recoloring matrix (black to inkColor, white to white) -->
             <feColorMatrix id="sketch-recolor-matrix" type="matrix" values="1 0 0 0 0
                                                                            0 1 0 0 0
                                                                            0 0 1 0 0
@@ -448,6 +481,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
     <!-- App Script -->
     <script src="app.js"></script>

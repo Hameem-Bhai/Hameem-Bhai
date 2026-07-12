@@ -83,11 +83,18 @@
         
         organicNoiseSlider: document.getElementById('organic-noise'),
         organicNoiseVal: document.getElementById('organic-noise-val'),
+
+        inkPressureSlider: document.getElementById('ink-pressure'),
+        inkPressureVal: document.getElementById('ink-pressure-val'),
         
         zoomSlider: document.getElementById('zoom-slider'),
         zoomVal: document.getElementById('zoom-value'),
         
         fmtDrawBtn: document.getElementById('fmt-draw-btn'),
+        fmtCorrectBtn: document.getElementById('fmt-correct'),
+        importFileInput: document.getElementById('import-file-input'),
+        inkSwatches: document.querySelectorAll('.ink-swatch'),
+        fmtColorCustom: document.getElementById('fmt-color'),
         doodleModal: document.getElementById('doodle-modal'),
         doodleCanvas: document.getElementById('doodle-canvas'),
         doodleClear: document.getElementById('doodle-clear'),
@@ -121,12 +128,13 @@
         marginBottom: 50,
         showMarginHelper: false,
         
-        paperTexture: 'none', // 'none', 'crumpled', 'spiral', 'shadow'
-        mistakeFrequency: 0, // percentage 0 to 5
-        lineSlant: 0, // range -3 to 3 degrees
-        fatigueFactor: 0, // percentage 0 to 100
-        organicNoise: 0, // integer 0 to 5
-        zoomFactor: 100, // percentage 50 to 150
+        paperTexture: 'none',
+        mistakeFrequency: 0,
+        lineSlant: 0,
+        fatigueFactor: 0,
+        organicNoise: 0,
+        inkPressure: 0,
+        zoomFactor: 100,
         
         uploadedFonts: []
     };
@@ -284,6 +292,77 @@
 
         // Organic Noise Slider
         setupSlider(elements.organicNoiseSlider, elements.organicNoiseVal, 'organicNoise', '', triggerRender);
+
+        // Ink Pressure Slider — updates SVG filter scale values and re-applies to all pages
+        if (elements.inkPressureSlider) {
+            elements.inkPressureSlider.addEventListener('input', function (e) {
+                const level = parseInt(e.target.value);
+                state.inkPressure = level;
+                elements.inkPressureVal.textContent = level;
+                applyInkPressureFilter(level);
+            });
+        }
+
+        // Import .txt / .docx file
+        if (elements.importFileInput) {
+            elements.importFileInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const ext = file.name.split('.').pop().toLowerCase();
+                if (ext === 'txt') {
+                    const reader = new FileReader();
+                    reader.onload = function (ev) {
+                        state.text = ev.target.result;
+                        elements.textInput.value = state.text;
+                        triggerRender();
+                    };
+                    reader.readAsText(file);
+                } else if (ext === 'docx') {
+                    const reader = new FileReader();
+                    reader.onload = function (ev) {
+                        if (typeof mammoth === 'undefined') {
+                            alert('mammoth.js not loaded yet, please wait a moment and try again.');
+                            return;
+                        }
+                        mammoth.extractRawValue({ arrayBuffer: ev.target.result })
+                            .then(function (result) {
+                                state.text = result.value;
+                                elements.textInput.value = state.text;
+                                triggerRender();
+                            })
+                            .catch(function (err) {
+                                alert('Could not read .docx file: ' + err.message);
+                            });
+                    };
+                    reader.readAsArrayBuffer(file);
+                }
+                elements.importFileInput.value = '';
+            });
+        }
+
+        // Ink color swatches — apply color to current selection
+        elements.inkSwatches.forEach(function (swatch) {
+            swatch.addEventListener('mousedown', function (e) {
+                e.preventDefault(); // prevent losing selection
+                const color = swatch.dataset.color;
+                if (color) applyColorToSelection(color);
+            });
+        });
+
+        // Custom color picker — apply on change
+        if (elements.fmtColorCustom) {
+            elements.fmtColorCustom.addEventListener('input', function (e) {
+                applyColorToSelection(e.target.value);
+            });
+        }
+
+        // Correction / Cross-out button
+        if (elements.fmtCorrectBtn) {
+            elements.fmtCorrectBtn.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                applyCorrection();
+            });
+        }
 
         // Zoom Slider Listener
         elements.zoomSlider.addEventListener('input', function (e) {
@@ -800,6 +879,10 @@
             elements.organicNoiseSlider.value = state.organicNoise;
             elements.organicNoiseVal.textContent = state.organicNoise;
         }
+        if (elements.inkPressureSlider) {
+            elements.inkPressureSlider.value = state.inkPressure || 0;
+            elements.inkPressureVal.textContent = state.inkPressure || 0;
+        }
         if (elements.zoomSlider) {
             elements.zoomSlider.value = state.zoomFactor;
             elements.zoomVal.textContent = state.zoomFactor + '%';
@@ -912,6 +995,7 @@
         updateSketchColorMatrix();
         saveStateToLocalStorage();
         renderDocument();
+        if (state.inkPressure > 0) applyInkPressureFilter(state.inkPressure);
     }
 
     // Convert hex color to SVG Color Matrix to match sketch drawings to handwriting ink
@@ -2004,6 +2088,71 @@
         }
 
         syncTextFromEditable();
+    }
+
+    // Apply an ink color to the currently selected text on the page
+    function applyColorToSelection(color) {
+        restoreSelection();
+        const sel = window.getSelection();
+        if (!sel || !sel.rangeCount || sel.toString().trim() === '') return;
+        const range = sel.getRangeAt(0);
+        const span = document.createElement('span');
+        span.style.color = color;
+        try {
+            range.surroundContents(span);
+        } catch (e) {
+            const fragment = range.extractContents();
+            span.appendChild(fragment);
+            range.insertNode(span);
+            const newRange = document.createRange();
+            newRange.selectNodeContents(span);
+            sel.removeAllRanges();
+            sel.addRange(newRange);
+        }
+        syncTextFromEditable();
+    }
+
+    // Apply a realistic pen cross-out (correction mark) to selected text
+    function applyCorrection() {
+        restoreSelection();
+        const sel = window.getSelection();
+        if (!sel || !sel.rangeCount || sel.toString().trim() === '') return;
+        const range = sel.getRangeAt(0);
+        const span = document.createElement('span');
+        span.className = 'hw-correction';
+        // Match current ink color for the strikethrough
+        span.style.textDecorationColor = state.inkColor || '#0011ff';
+        span.style.color = state.inkColor || '#0011ff';
+        try {
+            range.surroundContents(span);
+        } catch (e) {
+            const fragment = range.extractContents();
+            span.appendChild(fragment);
+            range.insertNode(span);
+        }
+        syncTextFromEditable();
+    }
+
+    // Apply / remove the ink pressure SVG filter on all pages based on slider level (0 = off)
+    function applyInkPressureFilter(level) {
+        const pages = document.querySelectorAll('.paper-content');
+        const dispEl = document.getElementById('pressure-displacement');
+        const morphEl = document.getElementById('pressure-morphology');
+
+        // Scale: level 0 = off, level 1-5 = increasing distortion
+        const dispScale = level * 1.6;         // 0 → 8 max displacement
+        const erodeRadius = level > 3 ? 0.3 : 0; // slight erosion at high levels
+
+        if (dispEl) dispEl.setAttribute('scale', dispScale);
+        if (morphEl) morphEl.setAttribute('radius', erodeRadius);
+
+        pages.forEach(function (page) {
+            if (level === 0) {
+                page.style.filter = '';
+            } else {
+                page.style.filter = 'url(#ink-pressure)';
+            }
+        });
     }
 
     function insertPageBreak() {
