@@ -1082,7 +1082,7 @@
         const content = document.createElement('div');
         content.className = 'paper-content';
         content.setAttribute('contenteditable', 'true');
-        content.style.fontFamily = state.fontFamily;
+        content.style.fontFamily = getFontFamilyWithFallbacks(state.fontFamily);
         content.style.fontSize = `${state.fontSize}px`;
         content.style.lineHeight = `${state.lineHeight}px`;
         content.style.letterSpacing = `${state.letterSpacing}px`;
@@ -1150,6 +1150,22 @@
             page: page,
             content: content
         };
+    }
+
+    // Returns the selected font-family with Bengali script fallback fonts appended.
+    // This ensures Bengali characters render correctly even when a Latin font is chosen.
+    function getFontFamilyWithFallbacks(fontFamily) {
+        const bengaliFallbacks = "'Galada', 'Baloo Da 2', 'Hind Siliguri', 'Noto Sans Bengali', sans-serif";
+        // If it already contains a Bengali font, don't double-stack
+        if (
+            fontFamily.includes('Galada') ||
+            fontFamily.includes('Baloo Da') ||
+            fontFamily.includes('Hind Siliguri') ||
+            fontFamily.includes('Noto Sans Bengali')
+        ) {
+            return fontFamily;
+        }
+        return `${fontFamily}, ${bengaliFallbacks}`;
     }
 
     // Seeded random generator for placing noise elements in identical positions on re-renders

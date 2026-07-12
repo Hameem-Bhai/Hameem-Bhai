@@ -8,10 +8,12 @@
     <!-- CSS Stylesheet -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- Google Fonts for handwriting styles -->
+    <!-- Google Fonts: Latin handwriting styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@400;700&family=Homemade+Apple&family=Kalam:wght@400;700&family=Nothing+You+Could+Do&family=Patrick+Hand&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Bengali script support -->
+    <link href="https://fonts.googleapis.com/css2?family=Galada&family=Baloo+Da+2:wght@400;700&family=Hind+Siliguri:wght@400;600&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -53,13 +55,21 @@
                     <div class="control-group">
                         <label class="control-label" for="font-select">Font Family</label>
                         <select id="font-select" class="select-dropdown">
-                            <option value="'Caveat', cursive">Caveat (Flowy & Casual)</option>
-                            <option value="'Kalam', cursive">Kalam (Neat Print)</option>
-                            <option value="'Shadows Into Light', cursive">Shadows Into Light (Slim & Tidy)</option>
-                            <option value="'Homemade Apple', cursive">Homemade Apple (Elegant Cursive)</option>
-                            <option value="'Patrick Hand', cursive">Patrick Hand (Rounded Print)</option>
-                            <option value="'Architects Daughter', cursive">Architects Daughter (Spaced Caps)</option>
-                            <option value="'Nothing You Could Do', cursive">Nothing You Could Do (Scratchy Ink)</option>
+                            <optgroup label="── Latin Handwriting ──">
+                                <option value="'Caveat', cursive">Caveat (Flowy &amp; Casual)</option>
+                                <option value="'Kalam', cursive">Kalam (Neat Print)</option>
+                                <option value="'Shadows Into Light', cursive">Shadows Into Light (Slim &amp; Tidy)</option>
+                                <option value="'Homemade Apple', cursive">Homemade Apple (Elegant Cursive)</option>
+                                <option value="'Patrick Hand', cursive">Patrick Hand (Rounded Print)</option>
+                                <option value="'Architects Daughter', cursive">Architects Daughter (Spaced Caps)</option>
+                                <option value="'Nothing You Could Do', cursive">Nothing You Could Do (Scratchy Ink)</option>
+                            </optgroup>
+                            <optgroup label="── বাংলা (Bengali) ──">
+                                <option value="'Galada', cursive">Galada (ক্যালিগ্রাফি / Calligraphic)</option>
+                                <option value="'Baloo Da 2', cursive">Baloo Da 2 (গোলাকার / Rounded)</option>
+                                <option value="'Hind Siliguri', sans-serif">Hind Siliguri (পরিষ্কার / Clean Print)</option>
+                                <option value="'Noto Sans Bengali', sans-serif">Noto Sans Bengali (সার্বজনীন / Universal)</option>
+                            </optgroup>
                         </select>
                     </div>
 
