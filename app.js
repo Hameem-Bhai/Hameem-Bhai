@@ -1155,12 +1155,13 @@
     // Returns the selected font-family with Bengali script fallback fonts appended.
     // This ensures Bengali characters render correctly even when a Latin font is chosen.
     function getFontFamilyWithFallbacks(fontFamily) {
-        const bengaliFallbacks = "'Galada', 'Baloo Da 2', 'Hind Siliguri', 'Noto Sans Bengali', sans-serif";
+        const bengaliFallbacks = "'Atma', 'Alkatra', 'Galada', 'Noto Serif Bengali', 'Noto Sans Bengali', sans-serif";
         // If it already contains a Bengali font, don't double-stack
         if (
+            fontFamily.includes('Atma') ||
+            fontFamily.includes('Alkatra') ||
             fontFamily.includes('Galada') ||
-            fontFamily.includes('Baloo Da') ||
-            fontFamily.includes('Hind Siliguri') ||
+            fontFamily.includes('Noto Serif Bengali') ||
             fontFamily.includes('Noto Sans Bengali')
         ) {
             return fontFamily;
