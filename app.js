@@ -165,8 +165,8 @@
         // Text input changes (Debounced)
         elements.textInput.addEventListener('input', debounce(function (e) {
             state.text = e.target.value;
-            triggerRender();
-        }, 150));
+            debouncedRender();
+        }, 400));
 
         elements.textInput.addEventListener('keydown', function (e) {
             if (e.ctrlKey && e.key === 'Enter') {
@@ -178,37 +178,37 @@
         // Font selection
         elements.fontSelect.addEventListener('change', function (e) {
             state.fontFamily = e.target.value;
-            triggerRender();
+            debouncedRender();
         });
 
-        // Sliders & Values Sync
-        setupSlider(elements.fontSizeSlider, elements.fontSizeVal, 'fontSize', 'px', triggerRender);
+        // Sliders & Values Sync — layout-affecting: debounced render
+        setupSlider(elements.fontSizeSlider, elements.fontSizeVal, 'fontSize', 'px', debouncedRender);
         setupSlider(elements.lineHeightSlider, elements.lineHeightVal, 'lineHeight', 'px', function(val) {
             document.documentElement.style.setProperty('--line-height', `${val}px`);
-            triggerRender();
+            debouncedRender();
         });
-        setupSlider(elements.letterSpacingSlider, elements.letterSpacingVal, 'letterSpacing', 'px', triggerRender);
-        setupSlider(elements.wordSpacingSlider, elements.wordSpacingVal, 'wordSpacing', 'em', triggerRender);
-        
-        setupSlider(elements.wordJitterSlider, elements.wordJitterVal, 'wordJitter', '°', triggerRender);
-        setupSlider(elements.lineJitterSlider, elements.lineJitterVal, 'lineJitter', 'px', triggerRender);
+        setupSlider(elements.letterSpacingSlider, elements.letterSpacingVal, 'letterSpacing', 'px', debouncedRender);
+        setupSlider(elements.wordSpacingSlider, elements.wordSpacingVal, 'wordSpacing', 'em', debouncedRender);
 
-        // Page Layout Sliders
+        setupSlider(elements.wordJitterSlider, elements.wordJitterVal, 'wordJitter', '°', debouncedRender);
+        setupSlider(elements.lineJitterSlider, elements.lineJitterVal, 'lineJitter', 'px', debouncedRender);
+
+        // Margin sliders — update CSS var live, debounced re-render
         setupSlider(elements.marginLeftSlider, elements.marginLeftVal, 'marginLeft', 'px', function(val) {
             document.documentElement.style.setProperty('--margin-left', `${val}px`);
-            triggerRender();
+            debouncedRender();
         });
         setupSlider(elements.marginTopSlider, elements.marginTopVal, 'marginTop', 'px', function(val) {
             document.documentElement.style.setProperty('--margin-top', `${val}px`);
-            triggerRender();
+            debouncedRender();
         });
         setupSlider(elements.marginRightSlider, elements.marginRightVal, 'marginRight', 'px', function(val) {
             document.documentElement.style.setProperty('--margin-right', `${val}px`);
-            triggerRender();
+            debouncedRender();
         });
         setupSlider(elements.marginBottomSlider, elements.marginBottomVal, 'marginBottom', 'px', function(val) {
             document.documentElement.style.setProperty('--margin-bottom', `${val}px`);
-            triggerRender();
+            debouncedRender();
         });
 
         elements.toggleMarginsBtn.addEventListener('click', function() {
@@ -258,42 +258,38 @@
             pages.forEach(p => p.classList.toggle('scanner-effect', state.scannerEffect));
         });
 
-        // Ink Colors
+        // Ink Colors — CSS-only update, no re-render needed
         elements.colorPresets.forEach(preset => {
             preset.addEventListener('click', function () {
                 elements.colorPresets.forEach(p => p.classList.remove('active'));
                 preset.classList.add('active');
                 state.inkColor = preset.getAttribute('data-color');
                 elements.customColorInput.value = state.inkColor;
-                triggerRender();
+                applyInkColorToPages(state.inkColor);
+                saveStateToLocalStorage();
             });
         });
 
         elements.customColorInput.addEventListener('input', function (e) {
             elements.colorPresets.forEach(p => p.classList.remove('active'));
             state.inkColor = e.target.value;
-            triggerRender();
+            applyInkColorToPages(state.inkColor);
+            saveStateToLocalStorage();
         });
 
-        // Paper Texture Selection
+        // Paper Texture — needs re-render
         elements.paperTextureSelect.addEventListener('change', function (e) {
             state.paperTexture = e.target.value;
             triggerRender();
         });
 
-        // Mistake Frequency Slider
-        setupSlider(elements.mistakeSlider, elements.mistakeVal, 'mistakeFrequency', '%', triggerRender);
+        // Mistake / Slant / Fatigue / Noise — debounced render
+        setupSlider(elements.mistakeSlider, elements.mistakeVal, 'mistakeFrequency', '%', debouncedRender);
+        setupSlider(elements.lineSlantSlider, elements.lineSlantVal, 'lineSlant', '°', debouncedRender);
+        setupSlider(elements.fatigueSlider, elements.fatigueVal, 'fatigueFactor', '%', debouncedRender);
+        setupSlider(elements.organicNoiseSlider, elements.organicNoiseVal, 'organicNoise', '', debouncedRender);
 
-        // Line Slant Slider
-        setupSlider(elements.lineSlantSlider, elements.lineSlantVal, 'lineSlant', '°', triggerRender);
-
-        // Fatigue Factor Slider
-        setupSlider(elements.fatigueSlider, elements.fatigueVal, 'fatigueFactor', '%', triggerRender);
-
-        // Organic Noise Slider
-        setupSlider(elements.organicNoiseSlider, elements.organicNoiseVal, 'organicNoise', '', triggerRender);
-
-        // Ink Pressure Slider — updates SVG filter scale values and re-applies to all pages
+        // Ink Pressure Slider — CSS filter only, no re-render
         if (elements.inkPressureSlider) {
             elements.inkPressureSlider.addEventListener('input', function (e) {
                 const level = parseInt(e.target.value);
@@ -309,34 +305,51 @@
                 const file = e.target.files[0];
                 if (!file) return;
                 const ext = file.name.split('.').pop().toLowerCase();
+
                 if (ext === 'txt') {
                     const reader = new FileReader();
                     reader.onload = function (ev) {
                         state.text = ev.target.result;
                         elements.textInput.value = state.text;
+                        elements.importFileInput.value = ''; // reset AFTER read
                         triggerRender();
                     };
-                    reader.readAsText(file);
+                    reader.onerror = function () {
+                        alert('Could not read file. Please try again.');
+                        elements.importFileInput.value = '';
+                    };
+                    reader.readAsText(file, 'UTF-8');
+
                 } else if (ext === 'docx') {
                     const reader = new FileReader();
                     reader.onload = function (ev) {
                         if (typeof mammoth === 'undefined') {
-                            alert('mammoth.js not loaded yet, please wait a moment and try again.');
+                            alert('mammoth.js library not loaded. Please refresh the page and try again.');
+                            elements.importFileInput.value = '';
                             return;
                         }
                         mammoth.extractRawValue({ arrayBuffer: ev.target.result })
                             .then(function (result) {
-                                state.text = result.value;
+                                state.text = result.value.trim();
                                 elements.textInput.value = state.text;
+                                elements.importFileInput.value = '';
                                 triggerRender();
                             })
                             .catch(function (err) {
-                                alert('Could not read .docx file: ' + err.message);
+                                alert('Could not read .docx file: ' + (err.message || err));
+                                elements.importFileInput.value = '';
                             });
                     };
+                    reader.onerror = function () {
+                        alert('Could not read .docx file. Please try again.');
+                        elements.importFileInput.value = '';
+                    };
                     reader.readAsArrayBuffer(file);
+
+                } else {
+                    alert('Unsupported file type. Please use .txt or .docx');
+                    elements.importFileInput.value = '';
                 }
-                elements.importFileInput.value = '';
             });
         }
 
@@ -755,6 +768,13 @@
             display.textContent = val + unit;
             if (callback) callback(val);
         });
+        // Also fire on mouseup/touchend so a full render always happens after dragging stops
+        slider.addEventListener('change', function (e) {
+            let val = parseFloat(e.target.value);
+            state[stateKey] = val;
+            display.textContent = val + unit;
+            if (callback) callback(val);
+        });
     }
 
     // Toggle Themes (Dark / Light)
@@ -990,12 +1010,34 @@
         };
     }
 
-    // Queue render execution
+    // Immediate render (use sparingly — only for actions that truly need instant feedback)
     function triggerRender() {
         updateSketchColorMatrix();
         saveStateToLocalStorage();
         renderDocument();
         if (state.inkPressure > 0) applyInkPressureFilter(state.inkPressure);
+    }
+
+    // Debounced render — use for sliders and frequent events (waits 380ms after last call)
+    const debouncedRender = debounce(triggerRender, 380);
+
+    // Instantly update ink color on all pages without a full re-render
+    function applyInkColorToPages(color) {
+        updateSketchColorMatrix();
+        // Update all paper-content elements
+        document.querySelectorAll('.paper-content').forEach(function(el) {
+            el.style.color = color;
+        });
+        // Update all handwritten word spans that use the ink color directly
+        document.querySelectorAll('.handwritten-word, .handwritten-space').forEach(function(el) {
+            if (!el.style.color || el.style.color === el.closest('.paper-content')?.style.color) {
+                el.style.color = color;
+            }
+        });
+        // Re-color any organic noise SVG splatters on the page
+        document.querySelectorAll('.noise-svg circle, .noise-svg ellipse, .noise-svg path, .noise-svg polygon').forEach(function(el) {
+            el.setAttribute('fill', color);
+        });
     }
 
     // Convert hex color to SVG Color Matrix to match sketch drawings to handwriting ink
@@ -2135,16 +2177,23 @@
 
     // Apply / remove the ink pressure SVG filter on all pages based on slider level (0 = off)
     function applyInkPressureFilter(level) {
-        const pages = document.querySelectorAll('.paper-content');
+        // Apply to the full page wrapper so the effect covers everything on the page
+        const pages = document.querySelectorAll('.page-wrapper');
         const dispEl = document.getElementById('pressure-displacement');
         const morphEl = document.getElementById('pressure-morphology');
+        const turbEl = document.getElementById('pressure-turbulence');
 
-        // Scale: level 0 = off, level 1-5 = increasing distortion
-        const dispScale = level * 1.6;         // 0 → 8 max displacement
-        const erodeRadius = level > 3 ? 0.3 : 0; // slight erosion at high levels
+        // Much larger scales so the effect is clearly visible:
+        // level 1=5px, 2=10px, 3=15px, 4=20px, 5=28px displacement
+        const dispScale = level === 0 ? 0 : Math.round(level * 5.5);
+        // Erode slightly at levels 3+ to simulate ink pressure thinning
+        const erodeRadius = level >= 3 ? (level - 2) * 0.15 : 0;
+        // Increase turbulence frequency with level for more chaotic pressure
+        const baseFreq = 0.018 + (level * 0.006);
 
         if (dispEl) dispEl.setAttribute('scale', dispScale);
-        if (morphEl) morphEl.setAttribute('radius', erodeRadius);
+        if (morphEl) morphEl.setAttribute('radius', erodeRadius.toFixed(2));
+        if (turbEl) turbEl.setAttribute('baseFrequency', `${baseFreq.toFixed(4)} ${(baseFreq * 1.4).toFixed(4)}`);
 
         pages.forEach(function (page) {
             if (level === 0) {
