@@ -1269,8 +1269,6 @@
         page.appendChild(numIndicator);
         pageWrapper.appendChild(page);
         
-        elements.previewContainer.appendChild(pageWrapper);
-        
         return {
             wrapper: pageWrapper,
             page: page,
@@ -1766,8 +1764,8 @@
         const dims = paperDimensions[state.paperSize];
         const contentWidth = dims.width - state.marginLeft - state.marginRight;
         const contentHeight = dims.height - state.marginTop - state.marginBottom;
-        const maxLinesPerPage = Math.max(1, Math.floor(contentHeight / state.lineHeight));
-        const maxLineWidth = Math.max(100, contentWidth - 16);
+        const maxLinesPerPage = Math.max(1, Math.floor((contentHeight - 12) / state.lineHeight));
+        const maxLineWidth = Math.max(100, contentWidth - 24);
 
         const fragment = document.createDocumentFragment();
 

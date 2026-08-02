@@ -907,11 +907,9 @@ body.light-theme .input-text, body.light-theme .select-dropdown {
     min-height: var(--line-height);
     margin: 0;
     padding: 0;
-    /* CRITICAL: Prevent CSS from wrapping words within a line.
-       The JS renderer controls all line breaks via scrollHeight checks.
-       Without this, long words wrap inside the line div causing split-word bugs. */
-    white-space: nowrap;
-    overflow: visible;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Page Indicator Floating Overlay */
