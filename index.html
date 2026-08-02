@@ -429,16 +429,11 @@
             </feMerge>
         </filter>
 
-        <!-- Ink Pressure Simulation: varying stroke weight & micro-displacement -->
+        <!-- Ink Pressure Simulation: wavy stroke displacement like a ballpoint pen -->
         <filter id="ink-pressure" x="-5%" y="-5%" width="110%" height="110%">
             <feTurbulence id="pressure-turbulence" type="turbulence" baseFrequency="0.018 0.025" numOctaves="4" seed="5" result="noise"/>
             <feDisplacementMap in="SourceGraphic" in2="noise" id="pressure-displacement" scale="0" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
-            <feGaussianBlur in="displaced" id="pressure-blur" stdDeviation="0.15" result="blurred"/>
-            <feMorphology id="pressure-morphology" in="blurred" operator="erode" radius="0" result="thinned"/>
-            <feMerge>
-                <feMergeNode in="thinned"/>
-                <feMergeNode in="SourceGraphic" result="final"/>
-            </feMerge>
+            <feMorphology id="pressure-morphology" in="displaced" operator="erode" radius="0" result="final"/>
         </filter>
 
         <!-- Ink-matching Sketch Filter -->

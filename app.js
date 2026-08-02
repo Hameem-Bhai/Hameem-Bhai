@@ -1695,134 +1695,176 @@
         wordElement.style.setProperty('--word-spacing', `${activeWordSpacing}em`);
     }
 
-    // Complete UI & Pagination rendering loop
+    // Reusable Canvas 2D context for ultra-fast token width estimation without layout thrashing
+    const measureCanvas = document.createElement('canvas');
+    const measureCtx = measureCanvas.getContext('2d');
+
+    function measureTokenWidth(token) {
+        if (token.type === 'space') {
+            const spaceCount = token.text.length;
+            const wordSpacingEm = parseFloat(state.wordSpacing) || 0.05;
+            const wordSpacingPx = wordSpacingEm * state.fontSize;
+            return spaceCount * (state.fontSize * 0.28 + wordSpacingPx);
+        }
+        
+        let fontStyle = 'normal';
+        let fontWeight = '400';
+        let fontSize = state.fontSize;
+        let fontFamily = getFontFamilyWithFallbacks(state.fontFamily);
+
+        if (token.wrappers) {
+            token.wrappers.forEach(w => {
+                if (w.tagName === 'B' || w.tagName === 'STRONG' || w.style?.fontWeight === 'bold') fontWeight = '700';
+                if (w.tagName === 'I' || w.tagName === 'EM' || w.style?.fontStyle === 'italic') fontStyle = 'italic';
+                if (w.style?.fontSize) fontSize = parseFloat(w.style.fontSize);
+            });
+        }
+
+        const primaryFont = fontFamily.split(',')[0].replace(/['"]/g, '').trim();
+        measureCtx.font = `${fontStyle} ${fontWeight} ${fontSize}px "${primaryFont}", cursive, sans-serif`;
+        
+        const baseWidth = measureCtx.measureText(token.text).width;
+        const letterSpacing = parseFloat(state.letterSpacing) || 0;
+        const letterSpacingTotal = token.text.length * letterSpacing;
+        const wordSpacingEm = parseFloat(state.wordSpacing) || 0.05;
+        const wordSpacingPx = wordSpacingEm * fontSize;
+
+        return baseWidth + letterSpacingTotal + wordSpacingPx;
+    }
+
+    function appendTokenToLine(lineEl, token, pIdx, paragraphsCount) {
+        const tokenEl = document.createElement('span');
+        if (token.type === 'space') {
+            tokenEl.className = 'handwritten-space';
+            tokenEl.textContent = token.text;
+            let elementToAppend = tokenEl;
+            for (let wIdx = token.wrappers.length - 1; wIdx >= 0; wIdx--) {
+                const wrapperClone = token.wrappers[wIdx].cloneNode(false);
+                wrapperClone.appendChild(elementToAppend);
+                elementToAppend = wrapperClone;
+            }
+            lineEl.appendChild(elementToAppend);
+        } else {
+            tokenEl.className = 'handwritten-word';
+            tokenEl.textContent = token.text;
+            applyJitter(tokenEl, paragraphsCount > 1 ? pIdx / (paragraphsCount - 1) : 0);
+            let elementToAppend = tokenEl;
+            for (let wIdx = token.wrappers.length - 1; wIdx >= 0; wIdx--) {
+                const wrapperClone = token.wrappers[wIdx].cloneNode(false);
+                wrapperClone.appendChild(elementToAppend);
+                elementToAppend = wrapperClone;
+            }
+            lineEl.appendChild(elementToAppend);
+        }
+    }
+
+    // Complete UI & Pagination rendering loop (Ultra-fast DocumentFragment + zero layout thrashing)
     function renderDocument() {
-        // Clear all previous children
         elements.previewContainer.innerHTML = '';
-        
-        // Clear mapping
         pageParagraphMap = {};
-        
-        // Calculate max allowed height of paper content box
+
         const dims = paperDimensions[state.paperSize];
-        const maxContentHeight = dims.height - state.marginTop - state.marginBottom;
-        
+        const contentWidth = dims.width - state.marginLeft - state.marginRight;
+        const contentHeight = dims.height - state.marginTop - state.marginBottom;
+        const maxLinesPerPage = Math.max(1, Math.floor(contentHeight / state.lineHeight));
+        const maxLineWidth = Math.max(100, contentWidth - 16);
+
+        const fragment = document.createDocumentFragment();
+
         let pageCount = 1;
         let currentPage = createPageElement(pageCount);
         let currentLine = createLineElement();
         currentPage.content.appendChild(currentLine);
 
-        // Normalize text lines
+        let linesOnCurrentPage = 1;
+        let currentLineWidth = 0;
+
         const paragraphs = state.text.split('\n');
-        
         let justPaged = false;
 
         for (let pIdx = 0; pIdx < paragraphs.length; pIdx++) {
             const paraText = paragraphs[pIdx];
-            
-            // Check for manual page-break marker
+
             if (paraText.trim() === '[page-break]') {
+                fragment.appendChild(currentPage.wrapper);
                 pageCount++;
                 currentPage = createPageElement(pageCount);
                 currentLine = createLineElement();
                 currentPage.content.appendChild(currentLine);
+                linesOnCurrentPage = 1;
+                currentLineWidth = 0;
                 justPaged = true;
                 continue;
             }
-            
-            // Record paragraph mapping
+
             if (!pageParagraphMap[pageCount]) {
                 pageParagraphMap[pageCount] = [];
             }
             pageParagraphMap[pageCount].push(pIdx);
-            
-            // Handle Paragraph Breaks (explicit enter key)
+
             if (pIdx > 0 && !justPaged) {
-                currentLine = createLineElement();
-                currentPage.content.appendChild(currentLine);
-                
-                // If adding a line causes overflow
-                if (currentPage.content.scrollHeight > maxContentHeight) {
-                    // Start new page
+                linesOnCurrentPage++;
+                if (linesOnCurrentPage > maxLinesPerPage) {
+                    fragment.appendChild(currentPage.wrapper);
                     pageCount++;
                     currentPage = createPageElement(pageCount);
-                    currentLine = createLineElement();
-                    currentPage.content.appendChild(currentLine);
+                    linesOnCurrentPage = 1;
                 }
+                currentLine = createLineElement();
+                currentPage.content.appendChild(currentLine);
+                currentLineWidth = 0;
             }
-            
             justPaged = false;
 
-            // Parse HTML paragraph into styled tokens
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = paraText.trim() === '' ? '&nbsp;' : paraText;
             const tokens = extractStyledTokens(tempDiv);
-            
+
             for (const token of tokens) {
                 if (token.type === 'newline') {
-                    currentLine = createLineElement();
-                    currentPage.content.appendChild(currentLine);
-                    if (currentPage.content.scrollHeight > maxContentHeight) {
+                    linesOnCurrentPage++;
+                    if (linesOnCurrentPage > maxLinesPerPage) {
+                        fragment.appendChild(currentPage.wrapper);
                         pageCount++;
                         currentPage = createPageElement(pageCount);
-                        currentLine = createLineElement();
-                        currentPage.content.appendChild(currentLine);
+                        linesOnCurrentPage = 1;
                     }
+                    currentLine = createLineElement();
+                    currentPage.content.appendChild(currentLine);
+                    currentLineWidth = 0;
                     continue;
                 }
-                
-                const tokenEl = document.createElement('span');
-                
+
+                const tokenWidth = measureTokenWidth(token);
+
                 if (token.type === 'space') {
-                    tokenEl.className = 'handwritten-space';
-                    tokenEl.textContent = token.text;
-                    
-                    let elementToAppend = tokenEl;
-                    for (let wIdx = token.wrappers.length - 1; wIdx >= 0; wIdx--) {
-                        const wrapperClone = token.wrappers[wIdx].cloneNode(false);
-                        wrapperClone.appendChild(elementToAppend);
-                        elementToAppend = wrapperClone;
+                    if (currentLineWidth + tokenWidth <= maxLineWidth) {
+                        appendTokenToLine(currentLine, token, pIdx, paragraphs.length);
+                        currentLineWidth += tokenWidth;
                     }
-                    currentLine.appendChild(elementToAppend);
-                } else {
-                    tokenEl.className = 'handwritten-word';
-                    tokenEl.textContent = token.text;
-                    applyJitter(tokenEl, paragraphs.length > 1 ? pIdx / (paragraphs.length - 1) : 0);
-                    
-                    let elementToAppend = tokenEl;
-                    for (let wIdx = token.wrappers.length - 1; wIdx >= 0; wIdx--) {
-                        const wrapperClone = token.wrappers[wIdx].cloneNode(false);
-                        wrapperClone.appendChild(elementToAppend);
-                        elementToAppend = wrapperClone;
-                    }
-                    currentLine.appendChild(elementToAppend);
-                    
-                    // Measure content block size
-                    if (currentPage.content.scrollHeight > maxContentHeight) {
-                        currentLine.removeChild(elementToAppend);
-                        
-                        if (currentLine.children.length > 0) {
+                } else { // word
+                    if (currentLineWidth + tokenWidth > maxLineWidth && currentLineWidth > 0) {
+                        linesOnCurrentPage++;
+                        if (linesOnCurrentPage > maxLinesPerPage) {
+                            fragment.appendChild(currentPage.wrapper);
                             pageCount++;
                             currentPage = createPageElement(pageCount);
-                            currentLine = createLineElement();
-                            currentPage.content.appendChild(currentLine);
-                            currentLine.appendChild(elementToAppend);
-                        } else {
-                            currentPage.content.removeChild(currentLine);
-                            pageCount++;
-                            currentPage = createPageElement(pageCount);
-                            currentPage.content.appendChild(currentLine);
-                            currentLine.appendChild(elementToAppend);
+                            linesOnCurrentPage = 1;
                         }
-                        
-                        if (!pageParagraphMap[pageCount]) {
-                            pageParagraphMap[pageCount] = [];
-                        }
-                        pageParagraphMap[pageCount].push(pIdx);
+                        currentLine = createLineElement();
+                        currentPage.content.appendChild(currentLine);
+                        currentLineWidth = 0;
                     }
+
+                    appendTokenToLine(currentLine, token, pIdx, paragraphs.length);
+                    currentLineWidth += tokenWidth;
                 }
             }
         }
+
+        fragment.appendChild(currentPage.wrapper);
+        elements.previewContainer.appendChild(fragment);
+
         window.lastRenderedTextLength = state.text.length;
         applyPostRenderSlants();
         autoScalePages();
