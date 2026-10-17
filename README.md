@@ -1,74 +1,138 @@
-<!-- ═══════════════════ HEADER ═══════════════════ -->
+<!-- ═══════════════════ ENTER THE PINK ZONE ═══════════════════ -->
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:020617,50:1e40af,100:22d3ee&height=210&section=header&text=BASIT%20HAMEEM&fontSize=52&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Code.%20Create.%20Play.%20Repeat.&descAlignY=60&descSize=18" alt="Basit Hameem — Code. Create. Play. Repeat." />
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:09090b,45:831843,100:ec4899&height=230&section=header&text=Hi%2C%20I%20am%20Hameem&fontSize=48&fontColor=fdf2f8&animation=fadeIn&fontAlignY=37&desc=People%20know%20me%20as%20Hameem%20Bhai.&descAlignY=59&descSize=20&descColor=fbcfe8" alt="Hi, I am Hameem. People know me as Hameem Bhai." />
 
 <div align="center">
 
-<a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=22&duration=3000&pause=1000&color=22D3EE&center=true&vCenter=true&width=650&lines=Hey%2C+I'm+Basit+%F0%9F%91%8B;I+build+things+that+you+can+click+and+play.;Learning+C%2B%2B.+Exploring+game+development.;A+little+curiosity.+A+lot+of+experiments." alt="Animated introduction" />
-</a>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=3000&pause=1100&color=F472B6&center=true&vCenter=true&width=700&height=55&lines=Big+ideas.+Pink+pixels.+Endless+curiosity.;Exploring+AI.+Getting+better+at+prompting.;Making+cool+stuff%2C+one+experiment+at+a+time.;Sometimes+I+code.+Sometimes+I+convince+AI+to." alt="Exploring AI, prompting, and building cool things." />
 
 <br />
 
-<a href="mailto:basithameem@gmail.com">
-  <img src="https://img.shields.io/badge/EMAIL-0f172a?style=for-the-badge&logo=gmail&logoColor=22d3ee" alt="Email" />
-</a>
 <a href="https://github.com/Hameem-Bhai?tab=repositories">
-  <img src="https://img.shields.io/badge/EXPLORE_MY_PROJECTS-0f172a?style=for-the-badge&logo=github&logoColor=22d3ee" alt="Explore my projects" />
+  <img src="https://img.shields.io/badge/MY_PROJECTS-18181b?style=for-the-badge&logo=github&logoColor=f472b6" alt="Explore my projects" />
+</a>
+<a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=basithameem%40gmail.com">
+  <img src="https://img.shields.io/badge/SAY_HELLO-18181b?style=for-the-badge&logo=gmail&logoColor=f472b6" alt="Send me an email using Gmail" />
 </a>
 
 <br /><br />
 
-<code>Curiosity is the starting point. Building is the fun part.</code>
+<code>Ideas in my head → experiments on my screen.</code>
 
 </div>
 
 <br />
 
-<!-- ═══════════════════ ABOUT ═══════════════════ -->
+<!-- ═══════════════════ THE HUMAN ═══════════════════ -->
 
-## 🎮 Player Profile
+## 🪩 Behind the Username
 
-```yaml
-name: Basit Hameem
-handle: Hameem-Bhai
-class: Software Builder
+Hey, I'm Hameem — people know me as Hameem Bhai.
 
-interests:
-  - Game development
-  - Interactive web experiences
-  - Making ideas playable
+I like taking an idea that sounds cool and seeing how far I can push it.
+Sometimes that means writing code. Sometimes it means experimenting with AI.
+Usually, it means learning something new along the way.
 
-currently_learning: C++
+- 🧠 Exploring AI prompting and getting better at turning ideas into useful results.
+- 🛠️ Using AI to help me build, experiment, and make cool stuff.
+- 🎮 Interested in games, interactive experiences, and websites with personality.
+- 🌱 Working on expanding my skills — not limiting myself to one language or tool.
+- 🤝 Open to interesting collaborations and slightly ridiculous project ideas.
+- 🐈 Cat included. Technical contributions uncertain.
 
-approach:
-  - Build something
-  - Figure out why it broke
-  - Make it better
-  - Repeat
-
-sidekick: A cat with questionable interest in my code
-```
-
-<!-- ═══════════════════ TOOLKIT ═══════════════════ -->
-
-## ⚡ My Loadout
+<br />
 
 <div align="center">
 
-<img src="https://skillicons.dev/icons?i=cpp,java,js&theme=dark" alt="C++, Java, and JavaScript" />
-
-<br /><br />
-
-Languages I'm learning and building with — not a collection of things I touched once.
+<img src="https://img.shields.io/badge/LESS_JUST_TALKING_ABOUT_IT.-831843?style=for-the-badge" alt="Less just talking about it." />
+<img src="https://img.shields.io/badge/MORE_LET'S_TRY_IT.-ec4899?style=for-the-badge" alt="More let's try it." />
 
 </div>
 
 <br />
 
-<!-- ═══════════════════ PROJECTS ═══════════════════ -->
+---
 
-## 🛠️ Things I've Built
+<!-- ═══════════════════ THE EXPERIMENTS ═══════════════════ -->
+
+## 🧠 Currently in My Brain
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### ✦ AI & Prompting
+
+Getting better at asking, refining, and directing.
+
+Exploring how to give AI clearer context, improve its output, and turn
+“that's interesting” into “I can actually use this.”
+
+</td>
+<td width="50%" valign="top">
+
+### ✦ Building with AI
+
+Using AI as part of the creative process.
+
+Trying ideas, putting things together, figuring out what works,
+and adding my own taste along the way.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### ✦ Interactive Stuff
+
+Websites that feel like more than a page.
+
+Interesting interactions, playful details, and things that make
+you want to move your cursor around.
+
+</td>
+<td width="50%" valign="top">
+
+### ✦ More Skills, More Possibilities
+
+Not trying to fit inside one little box.
+
+Picking up skills that help me create better things —
+through practice, curiosity, and a healthy amount of trial and error.
+
+</td>
+</tr>
+</table>
+
+<br />
+
+<!-- ═══════════════════ THE TOOLBOX ═══════════════════ -->
+
+## ⚡ Tools, Code & Curiosity
+
+<div align="center">
+
+<img src="https://skillicons.dev/icons?i=java,js,github&theme=dark" alt="Java, JavaScript, and GitHub" />
+
+<br /><br />
+
+<img src="https://img.shields.io/badge/AI_PROMPTING-18181b?style=for-the-badge&logoColor=f472b6" alt="AI prompting" />
+<img src="https://img.shields.io/badge/AI--ASSISTED_BUILDING-18181b?style=for-the-badge&logoColor=f472b6" alt="AI-assisted building" />
+<img src="https://img.shields.io/badge/CREATIVE_EXPERIMENTS-18181b?style=for-the-badge&logoColor=f472b6" alt="Creative experiments" />
+
+<br /><br />
+
+<sub>Some things I've built with. Some things I'm exploring. Always room for more.</sub>
+
+</div>
+
+<br />
+
+---
+
+<!-- ═══════════════════ THE BUILDS ═══════════════════ -->
+
+## 🛠️ From My Side of the Internet
 
 <table>
 <tr>
@@ -76,36 +140,36 @@ Languages I'm learning and building with — not a collection of things I touche
 
 ### 🍽️ Dhaba Ordering System
 
-A desktop ordering experience built with Java GUI.
+A Java desktop ordering project with menu browsing and an order cart.
 
-Browse menu items, put together an order, and manage the cart.
+A little restaurant logic, a little GUI work, and a lot of figuring things out.
 
 <br />
 
-<img src="https://img.shields.io/badge/Java-1e293b?style=flat-square&logo=openjdk&logoColor=22d3ee" alt="Java" />
-<img src="https://img.shields.io/badge/Desktop_App-1e293b?style=flat-square" alt="Desktop app" />
+<img src="https://img.shields.io/badge/Java-27272a?style=flat-square&logo=openjdk&logoColor=f472b6" alt="Java" />
+<img src="https://img.shields.io/badge/Desktop_App-831843?style=flat-square" alt="Desktop application" />
 
 <br /><br />
 
-<a href="https://github.com/Hameem-Bhai/Dhaba_Ordering_System">Explore the project ↗</a>
+<a href="https://github.com/Hameem-Bhai/Dhaba_Ordering_System">Take a look ↗</a>
 
 </td>
 <td width="50%" valign="top">
 
-### 🌐 Interactive Portfolio
+### 🌌 Interactive Portfolio
 
-My own corner of the internet.
+My own little digital playground.
 
-A portfolio website with an interactive cursor, a 3D model, and a little extra personality.
+An interactive cursor, a 3D model, and a place to show what I've been making.
 
 <br />
 
-<img src="https://img.shields.io/badge/JavaScript-1e293b?style=flat-square&logo=javascript&logoColor=f7df1e" alt="JavaScript" />
-<img src="https://img.shields.io/badge/Interactive_Web-1e293b?style=flat-square" alt="Interactive web" />
+<img src="https://img.shields.io/badge/JavaScript-27272a?style=flat-square&logo=javascript&logoColor=f472b6" alt="JavaScript" />
+<img src="https://img.shields.io/badge/Interactive_Web-831843?style=flat-square" alt="Interactive web" />
 
 <br /><br />
 
-<a href="https://github.com/Hameem-Bhai/my-portfolio">Explore the project ↗</a>
+<a href="https://github.com/Hameem-Bhai/my-portfolio">Step inside ↗</a>
 
 </td>
 </tr>
@@ -114,73 +178,98 @@ A portfolio website with an interactive cursor, a 3D model, and a little extra p
 
 ### 🛍️ E-commerce Website
 
-A storefront project built with JavaScript.
+A JavaScript storefront project.
 
-An exploration of building a shopping experience for the web.
+Exploring the building blocks of a shopping experience on the web.
 
 <br />
 
-<img src="https://img.shields.io/badge/JavaScript-1e293b?style=flat-square&logo=javascript&logoColor=f7df1e" alt="JavaScript" />
-<img src="https://img.shields.io/badge/E--commerce-1e293b?style=flat-square" alt="E-commerce" />
+<img src="https://img.shields.io/badge/JavaScript-27272a?style=flat-square&logo=javascript&logoColor=f472b6" alt="JavaScript" />
+<img src="https://img.shields.io/badge/E--commerce-831843?style=flat-square" alt="E-commerce" />
 
 <br /><br />
 
-<a href="https://github.com/Hameem-Bhai/Hameem_e-commerce_website">Explore the project ↗</a>
+<a href="https://github.com/Hameem-Bhai/Hameem_e-commerce_website">Browse the code ↗</a>
 
 </td>
 <td width="50%" valign="top">
 
-### 🚧 The Next Experiment
+### 🧪 The Next “What If?”
 
-Still loading...
+An AI experiment? A game idea? Something oddly specific?
 
-More games, more experiments, and more reasons to open the editor.
+The next project starts wherever curiosity takes me.
 
 <br />
 
-<img src="https://img.shields.io/badge/Status-Cooking-1e293b?style=flat-square&labelColor=0f172a&color=0891b2" alt="Status: Cooking" />
+<img src="https://img.shields.io/badge/STATUS-EXPERIMENTING-ec4899?style=flat-square&labelColor=27272a" alt="Status: Experimenting" />
 
 <br /><br />
 
-<a href="https://github.com/Hameem-Bhai?tab=repositories">See what I'm working on ↗</a>
+<a href="https://github.com/Hameem-Bhai?tab=repositories">Explore all my repos ↗</a>
 
 </td>
 </tr>
 </table>
 
-<!-- ═══════════════════ CURRENT FOCUS ═══════════════════ -->
+<br />
 
-## 🧭 Current Quest
+<!-- ═══════════════════ THE MINDSET ═══════════════════ -->
 
-- 🎯 Get more comfortable with C++.
-- 🕹️ Turn my interest in games into things people can play.
-- ✨ Give my projects more polish, not just more features.
-- 🤝 Build something interesting with other curious people.
+## 💭 The Way I See It
+
+> I don't need to know everything before I start.
+> I just need an idea worth trying — and the patience to make it better.
 
 <br />
 
-<!-- ═══════════════════ CONNECT ═══════════════════ -->
+<div align="center">
 
-## 📡 Open a Channel
+<code>💡 Have an idea</code>
+&nbsp; → &nbsp;
+<code>🛠️ Make a version</code>
+&nbsp; → &nbsp;
+<code>🧪 Try it out</code>
+&nbsp; → &nbsp;
+<code>✨ Make it better</code>
 
-Have a game idea, a weird experiment, or something fun to build?
+</div>
 
-<a href="mailto:basithameem@gmail.com">
-  <img src="https://img.shields.io/badge/LET'S_BUILD_SOMETHING-0891b2?style=for-the-badge&logo=gmail&logoColor=white" alt="Let's build something — email Basit" />
+<br />
+
+---
+
+<!-- ═══════════════════ SAY HELLO ═══════════════════ -->
+
+## 💌 Got Something Cool in Mind?
+
+An AI experiment, a game idea, a website, or something neither of us
+has a proper name for yet?
+
+I'm open to hearing it.
+
+<div align="center">
+
+<br />
+
+<a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=basithameem%40gmail.com&amp;su=Let%27s%20build%20something%20cool">
+  <img src="https://img.shields.io/badge/LET'S_MAKE_SOMETHING_COOL-ec4899?style=for-the-badge&logo=gmail&logoColor=ffffff" alt="Compose an email in Gmail" />
 </a>
 
 <br /><br />
 
----
+Email: <code>basithameem@gmail.com</code>
 
-<div align="center">
+<sub>Gmail button not your thing? Copy the address into your preferred email app.</sub>
 
-<sub>Somewhere between “what if?” and “it finally works.”</sub>
+<br /><br /><br />
+
+<code>Powered by curiosity. Decorated in pink. Occasionally supervised by a cat.</code>
 
 <br /><br />
 
-🐈
+🌙 &nbsp; ✦ &nbsp; 🐈 &nbsp; ✦ &nbsp; 💗
 
 </div>
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:020617,50:1e40af,100:22d3ee&height=110&section=footer" alt="" />
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:09090b,45:831843,100:ec4899&height=120&section=footer" alt="" />
