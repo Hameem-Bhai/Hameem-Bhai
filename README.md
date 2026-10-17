@@ -2,13 +2,13 @@
 
 <div align="center">
 
-<img width="100%" src="./hameem-orbit.svg" alt="Hi, I am Hameem. People know me as Hameem Bhai. A dark starfield with pink orbital rings." />
+<img width="100%" src="./hameem-orbit.svg" alt="Hi, I am Hameem. People know me as Hameem Bhai." />
 
 <br /><br />
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3200&pause=1400&color=F472B6&center=true&vCenter=true&width=850&height=65&lines=I+don't+just+want+to+use+cool+things.+I+want+to+make+them.;AI+in+the+toolkit.+An+idea+in+my+head.;Learning+more.+Building+better.+Thinking+bigger.;Hameem+Bhai.+Remember+the+name." alt="I don't just want to use cool things. I want to make them. AI in the toolkit. An idea in my head. Learning more. Building better. Thinking bigger. Hameem Bhai. Remember the name." />
+<img width="100%" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3200&pause=1400&color=F472B6&center=true&vCenter=true&width=850&height=65&lines=I+don't+just+want+to+use+cool+things.+I+want+to+make+them.;AI+in+the+toolkit.+An+idea+in+my+head.;Learning+more.+Building+better.+Thinking+bigger.;Hameem+Bhai.+Remember+the+name." alt="I don't just want to use cool things. I want to make them. AI in the toolkit. An idea in my head. Learning more. Building better. Thinking bigger. Hameem Bhai. Remember the name." />
 
-<br /><br />
+<br />
 
 <a href="https://github.com/Hameem-Bhai?tab=repositories">
   <img src="https://img.shields.io/badge/SEE_WHAT_I_BUILD-18181b?style=for-the-badge&logo=github&logoColor=f472b6" alt="See what I build" />
@@ -23,7 +23,27 @@
 
 </div>
 
-<br /><br />
+<br />
+
+<!-- ═══════════════════ THE SOUNDTRACK ═══════════════════ -->
+
+<div align="center">
+
+<h3>🎧 Hameem Bhai — After Hours</h3>
+
+<p>
+  <sub>Behind the next idea, there's probably a track on repeat.</sub>
+</p>
+
+<a href="https://spotify-github-profile.kittinanx.com/api/view?uid=26hdg7m66v2zeyo0ehtp3izw3&amp;redirect=true">
+  <img src="https://spotify-github-profile.kittinanx.com/api/view?uid=26hdg7m66v2zeyo0ehtp3izw3&amp;cover_image=true&amp;theme=spotify-embed&amp;show_offline=true&amp;background_color=09090f&amp;interchange=true&amp;profanity=false&amp;hide_remaster=false&amp;mode=dark&amp;bar_color=f472b6&amp;bar_color_cover=false" alt="Hameem Bhai's Spotify listening activity" />
+</a>
+
+</div>
+
+<br />
+
+---
 
 <!-- ═══════════════════ THE HUMAN ═══════════════════ -->
 
