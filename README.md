@@ -4,15 +4,7 @@
 
 <br/>
 
-<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/pixel-rain.gif" width="100%" alt="pixel rain"/>
-
-<br/>
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=26&duration=3000&pause=1200&color=F9A8D4&center=true&vCenter=true&width=440&height=55&lines=Hameem+Bhai" alt="name"/>
-
-<br/>
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=400&size=13&duration=2800&pause=900&color=A78BFA&center=true&vCenter=true&width=600&height=32&lines=learn+it.+build+it.+make+it+better.;web+dev+%2F+creative+tech+%2F+ai+experiments;computer+networks+%26+cybersecurity+%40+AIUB" alt="taglines"/>
+<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/hameem-card.gif" width="100%" alt="Hameem Bhai - Cosmic Terminal"/>
 
 <br/><br/>
 
@@ -29,15 +21,6 @@
 ---
 
 <br/>
-
-```yaml
-name:       Hameem Basit
-alias:      Hameem Bhai
-university: AIUB — Computer Network & Cyber Security
-status:     always building something
-interests:  [ web dev, cybersecurity, ai experiments, creative tech ]
-motto:      "learn it. build it. make it better."
-```
 
 <br/>
 
