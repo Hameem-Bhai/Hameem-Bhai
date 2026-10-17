@@ -4,7 +4,7 @@
 
 <br/>
 
-<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/hameem-avatar.jpg" width="130" alt="Hameem Bhai"/>
+<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/pixel-avatar.svg" width="480" alt="Hameem Bhai pixel art"/>
 
 <br/><br/>
 
