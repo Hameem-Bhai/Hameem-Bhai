@@ -4,13 +4,13 @@
 
 <br/>
 
-<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/hameem-avatar.jpg" width="130" style="border-radius:50%;" alt="Hameem Bhai"/>
+<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/hameem-avatar.jpg" width="130" alt="Hameem Bhai"/>
 
 <br/><br/>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=1200&color=F9A8D4&center=true&vCenter=true&width=500&height=50&lines=Hameem+Bhai" alt="name"/>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=1200&color=F9A8D4&center=true&vCenter=true&width=500&height=50&lines=Hameem+Bhai" alt="Hameem Bhai"/>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=400&size=13&duration=2800&pause=900&color=A78BFA&center=true&vCenter=true&width=620&height=36&lines=learn+it.+build+it.+make+it+better.;web+dev+·+creative+technology+·+ai+experiments;computer+networks+%26+cybersecurity+%40+AIUB" alt="tagline"/>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=400&size=13&duration=2800&pause=900&color=A78BFA&center=true&vCenter=true&width=620&height=36&lines=learn+it.+build+it.+make+it+better.;web+dev+%2F+creative+technology+%2F+ai+experiments;computer+networks+%26+cybersecurity+%40+AIUB" alt="tagline"/>
 
 <br/>
 
@@ -83,7 +83,7 @@ Creative digital products and web-dev services.
 
 **🚗 DriverDen**
 
-University project — driver-hiring platform with customer, driver, and admin flows. Built it from scratch, learned a ton.
+University project — driver-hiring platform with customer, driver, and admin flows. Built from scratch, learned a ton.
 <br/><sub>[→ view on github](https://github.com/Hameem-Bhai?tab=repositories)</sub>
 
 </td>
@@ -92,7 +92,7 @@ University project — driver-hiring platform with customer, driver, and admin f
 
 **🧪 Programming & Coursework**
 
-C++ algorithms · Java GUI · web apps. Every project is a chance to get a little better at the fundamentals.
+C++ algorithms · Java GUI · web apps. Every project is a chance to get a little better.
 <br/><sub>[→ browse all repos](https://github.com/Hameem-Bhai?tab=repositories)</sub>
 
 </td>
@@ -160,11 +160,7 @@ C++ algorithms · Java GUI · web apps. Every project is a chance to get a littl
 
 <img width="100%" src="https://streak-stats.demolab.com?user=Hameem-Bhai&hide_border=true&background=09090f&ring=f472b6&fire=ec4899&currStreakLabel=f9a8d4&sideLabels=e4d4df&currStreakNum=ffffff&sideNums=ffffff&dates=55556a&stroke=ffffff08" alt="streak"/>
 
-<br/>
-
-<img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=Hameem-Bhai&bg_color=09090f&color=f9a8d4&line=ec4899&point=f472b6&area=true&hide_border=true&area_color=f9a8d415" alt="activity graph"/>
-
-<br/>
+<br/><br/>
 
 <sub>stats cards are from external services and may occasionally be unavailable &nbsp;·&nbsp; language % ≠ proficiency</sub>
 
@@ -177,8 +173,6 @@ C++ algorithms · Java GUI · web apps. Every project is a chance to get a littl
 <br/>
 
 <div align="center">
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=400&size=13&duration=4000&pause=1500&color=A78BFA&center=true&vCenter=true&width=550&height=36&lines=🌙+imagine+→+experiment+→+build+→+improve" alt="philosophy"/>
 
 <br/>
 
