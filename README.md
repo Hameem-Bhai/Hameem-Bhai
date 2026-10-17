@@ -4,7 +4,7 @@
 
 <br/>
 
-<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/pixel-rain.gif" width="480" alt="pixel rain"/>
+<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/pixel-rain.gif" width="100%" alt="pixel rain"/>
 
 <br/>
 
