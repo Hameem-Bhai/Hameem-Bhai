@@ -9,6 +9,10 @@
 [![dokan](https://img.shields.io/badge/hameembhaierdokan.studio-a78bfa?style=flat-square)](https://hameembhaierdokan.studio)
 &nbsp;·&nbsp;
 [![repos](https://img.shields.io/badge/github%20repos-ec4899?style=flat-square)](https://github.com/Hameem-Bhai?tab=repositories)
+&nbsp;·&nbsp;
+[![linkedin](https://img.shields.io/badge/hameembasit99-0a66c2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/hameembasit99?originalSubdomain=bd)
+&nbsp;·&nbsp;
+[![email](https://img.shields.io/badge/basithameem@gmail.com-00e5ff?style=flat-square&logo=gmail&logoColor=white)](mailto:basithameem@gmail.com)
 
 </div>
 
@@ -168,7 +172,7 @@ claude · llm-assisted dev
 
 ```text
 CORE LANGUAGES
-c++ · java · python · js
+c · c++ · java · python · js
 ```
 
 </td>
@@ -179,7 +183,7 @@ c++ · java · python · js
 
 <div align="center">
 
-<sub>web · php · mysql · html · css · git · linux</sub>
+<sub>web · html · css · php · mysql · kali linux · git · linux</sub>
 
 </div>
 
@@ -203,6 +207,20 @@ When I'm not pushing code, I build things in the physical world.
 CLAY SCULPTING · UV RESIN CASTING · 3D CUSTOM COLLECTIBLES
 TACTILE MERCH · HARDWARE ACCESSORIES · UNIQUE PHYSICAL GOODS
 ```
+
+<br/>
+
+<div align="center"><sub>✦ &nbsp; connect with me &nbsp; ✦</sub></div>
+
+<br/>
+
+<div align="center">
+
+[![linkedin](https://img.shields.io/badge/hameembasit99-0a66c2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/hameembasit99?originalSubdomain=bd)
+&nbsp;·&nbsp;
+[![email](https://img.shields.io/badge/basithameem@gmail.com-00e5ff?style=flat-square&logo=gmail&logoColor=white)](mailto:basithameem@gmail.com)
+
+</div>
 
 </div>
 
