@@ -61,6 +61,21 @@ I sit at the intersection of full-stack web development, digital craft, and entr
 
 <br/>
 
+<div align="center"><sub>✦ &nbsp; right now &nbsp; ✦</sub></div>
+
+<div align="center">
+
+```text
+🛰️  building the next iteration of HameemBhai er Dokan
+🌏  working with YAF changemakers on high-impact projects
+📦  shipping micro-tools and web apps
+🔐  deepening networking and security foundations
+```
+
+</div>
+
+<br/>
+
 ---
 
 <br/>
