@@ -1,14 +1,10 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/hameem-cosmic-banner.jpg" width="100%" alt="banner"/>
-
-<br/>
-
-<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/hameem-card.gif" width="100%" alt="Hameem Bhai - Cosmic Terminal"/>
+<img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/hameem-card.gif" width="100%" alt="Hameem Bhai — Cyber Terminal"/>
 
 <br/><br/>
 
-[![portfolio](https://img.shields.io/badge/hameembhai.me-f9a8d4?style=flat-square)](https://hameembhai.me)
+[![portfolio](https://img.shields.io/badge/hameembhai.me-00e5ff?style=flat-square)](https://hameembhai.me)
 &nbsp;·&nbsp;
 [![dokan](https://img.shields.io/badge/hameembhaierdokan.studio-a78bfa?style=flat-square)](https://hameembhaierdokan.studio)
 &nbsp;·&nbsp;
@@ -22,10 +18,42 @@
 
 <br/>
 
+<div align="center">
+
+```text
+$ whoami
+```
+
+</div>
+
 <br/>
 
-Hey, I'm **Hameem Basit** — a CS undergrad who builds things on the internet and calls it fun.
-I enjoy making websites, poking at AI tools, learning how systems tick under the hood, and turning half-baked ideas into actual projects. Still learning, still shipping, always improving.
+<div align="center">
+
+**Hameem Basit** — builder, maker, and multidisciplinary tinkerer based in Dhaka.
+
+I sit at the intersection of full-stack web development, digital craft, and entrepreneurial ventures.
+
+<br/><sub>still learning · always shipping · half-baked ideas → working products</sub>
+
+</div>
+
+<br/>
+
+---
+
+<br/>
+
+<div align="center"><sub>✦ &nbsp; currently focused on &nbsp; ✦</sub></div>
+
+<br/>
+
+```text
+🌐  Founder & Maker @ HameemBhai er Dokan      →  web experiences · digital craft · custom merch
+🌏  2026 Young Asians Fellowship Fellow        →  regional changemakers · accelerator tracks
+📦  International trade & systems engineering  →  scalable commerce · indenting
+🛠️  Constantly shipping                       →  web apps · micro-tools · interactive products
+```
 
 <br/>
 
@@ -41,9 +69,9 @@ I enjoy making websites, poking at AI tools, learning how systems tick under the
 <tr>
 <td width="50%" valign="top">
 
-**🌌 Personal Portfolio**
+**🌐 Personal Portfolio**
 
-My own space on the internet. Work, ideas, creative identity.
+My own corner of the internet. Work, ideas, creative identity.
 <br/><sub>[→ hameembhai.me](https://hameembhai.me)</sub>
 
 <a href="https://hameembhai.me"><img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/portfolio-preview.jpg" width="100%" alt="portfolio"/></a>
@@ -53,7 +81,7 @@ My own space on the internet. Work, ideas, creative identity.
 
 **🛍️ Hameem Bhai er Dokan**
 
-Creative digital products and web-dev services.
+Bespoke web experiences, creative digital solutions, custom merchandise.
 <br/><sub>[→ hameembhaierdokan.studio](https://hameembhaierdokan.studio)</sub>
 
 <a href="https://hameembhaierdokan.studio"><img src="https://raw.githubusercontent.com/Hameem-Bhai/Hameem-Bhai/main/assets/dokan-preview.jpg" width="100%" alt="dokan"/></a>
@@ -66,7 +94,7 @@ Creative digital products and web-dev services.
 
 **🚗 DriverDen**
 
-University project — driver-hiring platform with customer, driver, and admin flows.
+Driver-hiring platform with customer, driver, and admin flows.
 <br/><sub>[→ view on github](https://github.com/Hameem-Bhai?tab=repositories)</sub>
 
 </td>
@@ -88,17 +116,70 @@ C++ algorithms · Java GUI · web apps. Every project is a chance to get better.
 
 <br/>
 
+<div align="center"><sub>✦ &nbsp; tech & tooling &nbsp; ✦</sub></div>
+
+<br/>
+
+<table>
+<tr>
+<td valign="top">
+
+```text
+DEPLOYMENT
+vercel · render
+```
+
+</td>
+<td valign="top">
+
+```text
+ECOSYSTEM
+git · github · uptimerobot
+```
+
+</td>
+<td valign="top">
+
+```text
+FORMS & MAIL
+emailjs · formsubmit · web3forms
+```
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+```text
+ENVIRONMENTS
+jetbrains · vs code
+```
+
+</td>
+<td valign="top">
+
+```text
+AI & AUTOMATION
+claude · llm-assisted dev
+```
+
+</td>
+<td valign="top">
+
+```text
+CORE LANGUAGES
+c++ · java · python · js
+```
+
+</td>
+</tr>
+</table>
+
+<br/>
+
 <div align="center">
 
-<sub>✦ &nbsp; toolkit &nbsp; ✦</sub>
-
-<br/><br/>
-
-<img src="https://skillicons.dev/icons?i=cpp,java,python,html,css,js,php,mysql,git,github,vscode,linux&theme=dark&perline=12" alt="tech stack"/>
-
-<br/><br/>
-
-<sub>c++ · java · python · javascript · html · css · php · mysql · git · linux</sub>
+<sub>web · php · mysql · html · css · git · linux</sub>
 
 </div>
 
@@ -108,36 +189,20 @@ C++ algorithms · Java GUI · web apps. Every project is a chance to get better.
 
 <br/>
 
-<div align="center"><sub>✦ &nbsp; currently focused on &nbsp; ✦</sub></div>
-
-<br/>
-
-```
-🔩  stronger fundamentals   →  understand the logic, not just make it run
-🌐  useful projects         →  coursework ideas into working applications
-🔐  cybersecurity           →  deepen networking and security foundations
-🤖  creative tech           →  ai workflows, expressive web design
-📦  keep shipping           →  document, improve, repeat
-```
-
-<br/>
-
----
+<div align="center"><sub>✦ &nbsp; creative & hands-on &nbsp; ✦</sub></div>
 
 <br/>
 
 <div align="center">
 
-<sub>✦ &nbsp; github activity &nbsp; ✦</sub>
+When I'm not pushing code, I build things in the physical world.
 
 <br/><br/>
 
-<img width="49%" src="https://github-readme-stats.vercel.app/api?username=Hameem-Bhai&show_icons=true&hide_border=true&bg_color=09090b&title_color=f9a8d4&icon_color=ec4899&text_color=e4d4df&ring_color=f472b6&include_all_commits=true&count_private=true" alt="stats"/>
-<img width="49%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Hameem-Bhai&layout=compact&hide_border=true&bg_color=09090b&title_color=f9a8d4&text_color=e4d4df&langs_count=8" alt="languages"/>
-
-<br/><br/>
-
-<img width="100%" src="https://streak-stats.demolab.com?user=Hameem-Bhai&hide_border=true&background=09090b&ring=f472b6&fire=ec4899&currStreakLabel=f9a8d4&sideLabels=e4d4df&currStreakNum=ffffff&sideNums=ffffff&dates=55556a" alt="streak"/>
+```text
+CLAY SCULPTING · UV RESIN CASTING · 3D CUSTOM COLLECTIBLES
+TACTILE MERCH · HARDWARE ACCESSORIES · UNIQUE PHYSICAL GOODS
+```
 
 </div>
 
@@ -147,9 +212,26 @@ C++ algorithms · Java GUI · web apps. Every project is a chance to get better.
 
 <br/>
 
+<div align="center"><sub>✦ &nbsp; github activity &nbsp; ✦</sub></div>
+
+<br/>
+
+<img width="49%" src="https://github-readme-stats.vercel.app/api?username=Hameem-Bhai&show_icons=true&hide_border=true&bg_color=030406&title_color=00e5ff&icon_color=ec4899&text_color=e4d4df&ring_color=f472b6&include_all_commits=true&count_private=true" alt="stats"/>
+<img width="49%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Hameem-Bhai&layout=compact&hide_border=true&bg_color=030406&title_color=00e5ff&text_color=e4d4df&langs_count=8" alt="languages"/>
+
+<br/><br/>
+
+<img width="100%" src="https://streak-stats.demolab.com?user=Hameem-Bhai&hide_border=true&background=030406&ring=f472b6&fire=ec4899&currStreakLabel=00e5ff&sideLabels=e4d4df&currStreakNum=ffffff&sideNums=ffffff&dates=55556a" alt="streak"/>
+
+<br/>
+
+---
+
+<br/>
+
 <div align="center">
 
-*the goal isn't to look like a developer. it's to become a better builder.*
+*the goal isn't to look like a builder. it's to build better.*
 
 <br/><br/>
 
