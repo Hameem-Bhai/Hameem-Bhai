@@ -54,7 +54,7 @@ I sit at the intersection of full-stack web development, digital craft, and entr
 
 ```text
 🌐  Founder & Maker @ HameemBhai er Dokan      →  web experiences · digital craft · custom merch
-🌏  2026 Young Asians Fellowship Fellow        →  regional changemakers · accelerator tracks
+🌏  2026 Young Asians Fellowship Fellow        →  1st place in STEM track · accelerator tracks
 📦  International trade & systems engineering  →  scalable commerce · indenting
 🛠️  Constantly shipping                       →  web apps · micro-tools · interactive products
 ```
