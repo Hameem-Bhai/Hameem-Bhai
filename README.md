@@ -183,7 +183,16 @@ c · c++ · java · python · js
 
 <div align="center">
 
-<sub>web · html · css · php · mysql · kali linux · git · linux</sub>
+![JavaScript](https://img.shields.io/badge/javascript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![PHP](https://img.shields.io/badge/php-777BB4?style=flat-square&logo=php&logoColor=white)
+![HTML](https://img.shields.io/badge/html5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/css3-1572B6?style=flat-square&logo=css3&logoColor=white)
+![Vercel](https://img.shields.io/badge/vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+![Render](https://img.shields.io/badge/render-46E3B7?style=flat-square&logo=render&logoColor=white)
+![JetBrains](https://img.shields.io/badge/jetbrains-000000?style=flat-square&logo=jetbrains&logoColor=white)
+![VS Code](https://img.shields.io/badge/vscode-007ACC?style=flat-square&logo=visualstudiocode&logoColor=white)
+![Kali Linux](https://img.shields.io/badge/kali-557C94?style=flat-square&logo=kalilinux&logoColor=white)
+![Git](https://img.shields.io/badge/git-F05032?style=flat-square&logo=git&logoColor=white)
 
 </div>
 
