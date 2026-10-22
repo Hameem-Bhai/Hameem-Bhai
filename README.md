@@ -277,6 +277,6 @@ TACTILE MERCH · HARDWARE ACCESSORIES · UNIQUE PHYSICAL GOODS
 
 <br/><br/>
 
-<sub>hameem bhai &nbsp;·&nbsp; made with curiosity and a little pink 🩷</sub>
+<sub>hameem bhai &nbsp;·&nbsp;<br> IloveCats🩷</sub>
 
 </div>
